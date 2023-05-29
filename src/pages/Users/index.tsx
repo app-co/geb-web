@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Menu } from '../../components/Menu'
 import { UserComp } from '../../components/UserComp'
 import * as S from './styles'
@@ -7,8 +7,7 @@ import { Form } from '@unform/web'
 import { api } from '../../services'
 import { IStars, IUserDtos } from '../../dtos'
 import { useQuery } from 'react-query'
-import { FormHandles, SubmitHandler } from '@unform/core'
-import { cor } from '../../styles/color'
+import { FormHandles } from '@unform/core'
 
 type State = {
   user: IUserDtos
@@ -50,7 +49,7 @@ export function Users() {
   })
 
   const handleUpateMembro = React.useCallback(
-    async (data: IMembro) => {
+    async (data: IUserDtos) => {
       const { nome, membro, senha } = data
       try {
         const dados = {
@@ -62,7 +61,7 @@ export function Users() {
 
         await api.post('/user/update-membro', dados).then((h) => {
           console.log(h.data)
-          setShowModal({ user: {} as IUser, modal: false })
+          setShowModal({ user: {} as IUserDtos, modal: false })
         })
       } catch (err) {
         console.log('erro', err)
@@ -118,7 +117,7 @@ export function Users() {
 
   const users =
     search.length > 0
-      ? data?.filter((h) => {
+      ? data?.filter((h: IUserDtos) => {
           const up = h.nome.toLocaleUpperCase()
           return up.includes(search.toLocaleUpperCase())
         })
@@ -168,7 +167,7 @@ export function Users() {
       <Menu />
 
       <S.content>
-        <Form>
+        <Form onSubmit={() => {}}>
           <Input
             name="search"
             onChange={(h) => setSearch(h.currentTarget.value)}
@@ -202,7 +201,7 @@ export function Users() {
                 <S.button
                   cor="delete"
                   onClick={() =>
-                    setShowModal({ user: {} as IUser, modal: false })
+                    setShowModal({ user: {} as IUserDtos, modal: false })
                   }
                 >
                   <p>Fechar</p>

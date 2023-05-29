@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
-import { IUser } from '../dtos'
+import { IUserDtos } from '../dtos'
 import { api } from '../services'
 
 interface IUserCredentials {
@@ -9,11 +9,11 @@ interface IUserCredentials {
 
 interface AuthState {
   token: string
-  user: IUser
+  user: IUserDtos
 }
 
 interface AuthContextData {
-  user: IUser
+  user: IUserDtos
   signIn(credentials: IUserCredentials): Promise<void>
   logOut: () => void
 }

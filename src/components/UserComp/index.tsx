@@ -1,6 +1,5 @@
-import { IUser, IUserDtos } from '../../dtos'
+import { IUserDtos } from '../../dtos'
 import * as S from './styles'
-import { AiFillStar } from 'react-icons/ai'
 import { Star } from '../Star'
 
 interface Props {

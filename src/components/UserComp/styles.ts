@@ -18,7 +18,7 @@ const variant = {
 }
 
 export const Container = styled.div<PropsSituation>`
-  width: 40vw;
+  /* width: 40vw; */
 
   display: flex;
   flex-direction: column;

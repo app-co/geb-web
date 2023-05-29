@@ -24,13 +24,15 @@ export const Container = styled.div`
 export const content = styled.div`
   display: flex;
   flex-direction: column;
+  width: 70vw;
+
+  padding: 20px;
 `
 
 export const box = styled.div`
   width: 100%;
   padding: 4vw;
   height: 70vw;
-
   overflow: scroll;
 `
 

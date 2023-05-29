@@ -8,7 +8,7 @@ export function Cadastro() {
     <S.Container>
       <Menu />
 
-      <Form style={{ width: '100%' }}>
+      <Form onSubmit={() => {}} style={{ width: '100%' }}>
         <S.box>
           <Input name="nome" />
           <Input name="membro" />
