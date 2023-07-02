@@ -54,7 +54,7 @@ export interface IPresencaDto {
   nome: string
   user_id: string
   presenca?: boolean
-  createdAt?: Date
+  createdAt: Date
 }
 
 export interface IOrderTransaction {
@@ -78,7 +78,7 @@ export interface ITransaction {
   prestador_id?: string
   valor: number
   descricao: string
-  created_at?: Date
+  created_at: Date
   date?: string
   valorFormated: string
 }
@@ -90,7 +90,7 @@ export interface IB2b {
   recevid_id: string
   appointment: string
   assunto: string
-  createdAt?: Date
+  createdAt: Date
   validate?: boolean
   id?: string
 }
@@ -137,4 +137,55 @@ export interface IStars {
   fk_id_user: string
   star: number
   valiador: string
+}
+
+export interface IPadrinho {
+  id: string
+  user_id: string
+  apadrinhado_name: string
+  apadrinhado_id: string
+  qnt: string
+  created_at: Date | string
+  updated_at: Date | string
+}
+
+export interface IGuest {
+  id: string
+  fk_user_id: string
+  name_convidado: string
+  approved: boolean
+  created_at: Date | string
+  updated_at: Date | string
+  user: {
+    id: string
+    nome: string
+    membro: string
+    token: string
+    senha: string
+    adm: boolean
+    created_at: string
+  }
+}
+
+export interface IDonate {
+  id: string
+  fk_id_user: string
+  approved: boolean
+  itens: string
+  created_at: Date | string
+  updated_at: Date | string
+}
+
+export interface IIndication {
+  id: string
+  indicado_id: string
+  indicado_name: string
+  quemIndicou_id: string
+  quemIndicou_name: string
+  client_name: string
+  phone_number_client: string
+  description: string
+  createdAt: Date | string
+  updated_at: Date | string
+  validate: boolean
 }

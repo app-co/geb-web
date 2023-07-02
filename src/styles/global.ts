@@ -43,13 +43,20 @@ export const GlobalStyle = createGlobalStyle`
       font-size: calc(12px + 2vw);
       font-weight: 800;
     }
+
     h3 {
-      font-size: calc(1rem + .7vw);
+      font-size: calc(16px + .7vw);
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: calc(10px + .7vw);
       font-weight: 600;
     }
 
     p {
-      font-size: calc(8px + .7vw)
+      font-size: calc(8px + .5vw);
+      font-weight: 300;
     }
 
 
@@ -64,8 +71,12 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     button {
-        cursor: pointer;
-        border-radius: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      
+      &:hover {
+        opacity: 0.9;
+      }
     }
 
 `

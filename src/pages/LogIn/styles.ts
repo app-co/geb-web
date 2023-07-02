@@ -30,6 +30,6 @@ export const buton = styled.button`
   background-color: ${cor.blue[2]};
   width: 100%;
   padding: 5px 0;
-
+  height: 3rem;
   color: #fff;
 `

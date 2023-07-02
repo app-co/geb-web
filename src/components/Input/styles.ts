@@ -32,7 +32,7 @@ export const Box = styled.div<PropsInput>`
 
 export const Container = styled.div<PropsInput>`
   width: 20rem;
-  height: 3rem;
+  height: 2.3rem;
   padding: 2px 1rem;
 
   display: flex;
