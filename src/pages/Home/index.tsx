@@ -63,6 +63,8 @@ export function Home() {
     )
   }
 
+  const handleEdit = React.useCallback(async () => {}, [])
+
   return (
     <S.Container>
       <Modal
