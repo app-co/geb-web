@@ -7,6 +7,7 @@ import { useQuery } from 'react-query'
 import { consumoRoutes } from '../../../services/routes'
 import { ITransaction } from '../../../dtos'
 import { getMonth } from 'date-fns'
+import { Loading } from '../../Loading'
 
 interface I {
   id: string
@@ -41,8 +42,6 @@ export function ChartConsumo({ id }: I) {
 
       fil.forEach((h) => {
         const mes = getMonth(new Date(h.created_at)) + 1
-
-        console.log(m === mes)
         if (m === mes) {
           data = {
             mes: m,
@@ -93,10 +92,12 @@ export function ChartConsumo({ id }: I) {
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
+          flexDirection: 'column',
           color: '#fff',
         }}
       >
         <h2>CARREGANDO...</h2>
+        <Loading />
       </div>
     )
   }

@@ -7,6 +7,7 @@ import { padrinhoRoutes } from '../../../services/routes'
 import { api } from '../../../services'
 import { getMonth } from 'date-fns'
 import { IPadrinho } from '../../../dtos'
+import { Loading } from '../../Loading'
 
 interface I {
   id: string
@@ -41,8 +42,6 @@ export function ChartPadrinho({ id }: I) {
 
       fil.forEach((h) => {
         const mes = getMonth(new Date(h.created_at)) + 1
-
-        console.log(m === mes)
         if (m === mes) {
           data = {
             mes: m,
@@ -84,6 +83,23 @@ export function ChartPadrinho({ id }: I) {
         data: chart.map((h) => h.qnt),
       },
     ],
+  }
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          color: '#fff',
+        }}
+      >
+        <h2>CARREGANDO...</h2>
+        <Loading />
+      </div>
+    )
   }
 
   return (

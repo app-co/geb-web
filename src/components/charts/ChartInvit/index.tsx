@@ -7,6 +7,7 @@ import { api } from '../../../services'
 import { convidadosRoutes } from '../../../services/routes'
 import { IGuest } from '../../../dtos'
 import { getMonth } from 'date-fns'
+import { Loading } from '../../Loading'
 
 interface I {
   id: string
@@ -41,8 +42,6 @@ export function ChartInvit({ id }: I) {
 
       fil.forEach((h) => {
         const mes = getMonth(new Date(h.updated_at)) + 1
-
-        console.log(m === mes)
         if (m === mes) {
           data = {
             mes: m,
@@ -93,10 +92,12 @@ export function ChartInvit({ id }: I) {
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
+          flexDirection: 'column',
           color: '#fff',
         }}
       >
         <h2>CARREGANDO...</h2>
+        <Loading />
       </div>
     )
   }

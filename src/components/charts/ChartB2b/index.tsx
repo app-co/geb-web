@@ -7,6 +7,7 @@ import { api } from '../../../services'
 import { b2bRoutes } from '../../../services/routes'
 import { IB2b } from '../../../dtos'
 import { getMonth } from 'date-fns'
+import { Loading } from '../../Loading'
 
 interface I {
   id: string
@@ -42,8 +43,6 @@ export function ChartB2b({ id = '0' }: I) {
 
       fil.forEach((h) => {
         const mes = getMonth(new Date(h.createdAt)) + 1
-
-        console.log(m === mes)
         if (m === mes) {
           data = {
             mes: m,
@@ -94,10 +93,12 @@ export function ChartB2b({ id = '0' }: I) {
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
+          flexDirection: 'column',
           color: '#fff',
         }}
       >
         <h2>CARREGANDO...</h2>
+        <Loading />
       </div>
     )
   }

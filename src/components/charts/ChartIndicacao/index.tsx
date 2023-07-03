@@ -7,6 +7,7 @@ import { api } from '../../../services'
 import { indicationRoutes } from '../../../services/routes'
 import { IIndication } from '../../../dtos'
 import { getMonth } from 'date-fns'
+import { Loading } from '../../Loading'
 
 interface I {
   id: string
@@ -42,8 +43,6 @@ export function ChartIndicacao({ id }: I) {
 
       fil.forEach((h) => {
         const mes = getMonth(new Date(h.createdAt)) + 1
-
-        console.log(m === mes)
         if (m === mes) {
           data = {
             mes: m,
@@ -94,10 +93,12 @@ export function ChartIndicacao({ id }: I) {
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
+          flexDirection: 'column',
           color: '#fff',
         }}
       >
         <h2>CARREGANDO...</h2>
+        <Loading />
       </div>
     )
   }

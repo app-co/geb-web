@@ -7,6 +7,7 @@ import { presencaRotes } from '../../../services/routes'
 import { api } from '../../../services'
 import { IPresencaDto } from '../../../dtos'
 import { getMonth } from 'date-fns'
+import { Loading } from '../../Loading'
 
 interface I {
   id: string
@@ -31,7 +32,6 @@ export function ChartPresenca({ id }: I) {
     const fil = presen.filter((h) => h.user_id === id)
 
     const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    console.log(presen)
 
     const result: IResult[] = []
 
@@ -94,10 +94,12 @@ export function ChartPresenca({ id }: I) {
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
+          flexDirection: 'column',
           color: '#fff',
         }}
       >
         <h2>CARREGANDO...</h2>
+        <Loading />
       </div>
     )
   }

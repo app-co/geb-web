@@ -60,7 +60,6 @@ export function Users() {
         }
 
         await api.post('/user/update-membro', dados).then((h) => {
-          console.log(h.data)
           setShowModal({ user: {} as IUserDtos, modal: false })
         })
       } catch (err) {

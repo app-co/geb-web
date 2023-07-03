@@ -13,11 +13,14 @@ import { userRoutes } from '../../services/routes'
 import { IUserDtos } from '../../dtos'
 import { Form } from '@unform/web'
 import { Input } from '../../components/Input'
-import React from 'react'
+import React, { useRef } from 'react'
 import { Modal } from '../../components/Modal'
 import { EditUser } from '../../components/EditUser'
+import { FormHandles } from '@unform/core'
+import { Loading } from '../../components/Loading'
 
 export function Home() {
+  const updateRef = useRef<FormHandles>(null)
   const [search, setSearch] = React.useState('')
   const [selectId, setSelectId] = React.useState('')
   const [openModa, setOpenModal] = React.useState(false)
@@ -49,38 +52,64 @@ export function Home() {
     return us.find((h) => h.id === selectId)
   }, [selectId, user.data])
 
+  const handleUpateMembro = React.useCallback(
+    async (data: IUserDtos) => {
+      const { nome, membro, senha } = data
+      console.log(data)
+      try {
+        const dados = {
+          nome,
+          membro,
+          senha,
+          id: selectId,
+        }
+
+        await api.post('/user/update-membro', dados).then((h) => {
+          setOpenModal(false)
+        })
+      } catch (err) {
+        console.log('erro', err)
+      }
+    },
+    [selectId],
+  )
+
   if (user.isLoading) {
     return (
       <div
         style={{
           display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
         <h1>CARREGANDO...</h1>
+        <Loading />
       </div>
     )
   }
 
-  const handleEdit = React.useCallback(async () => {}, [])
-
   return (
     <S.Container>
-      <Modal
-        cancel={() => setOpenModal(false)}
-        isOpen={openModa}
-        title="EDITAR MEMBRO"
+      <Form
+        ref={updateRef}
+        onSubmit={handleUpateMembro}
+        initialData={{
+          nome: userById?.nome,
+          membro: userById?.membro,
+        }}
       >
-        <Form
-          initialData={{
-            nome: userById?.nome,
-            membro: userById?.membro,
-          }}
+        <Modal
+          submit={() => updateRef.current?.submitForm()}
+          cancel={() => setOpenModal(false)}
+          isOpen={openModa}
+          title="EDITAR MEMBRO"
         >
           <EditUser />
-        </Form>
-      </Modal>
+        </Modal>
+      </Form>
 
       <S.colum>
         <Form onSubmit={() => {}} style={{ position: 'relative' }}>

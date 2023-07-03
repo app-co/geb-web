@@ -12,9 +12,11 @@ export const Container = styled.div`
 `
 
 export const colum = styled.div`
-  width: 492px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(352px + 5vw);
   height: 824px;
-  flex-shrink: 0;
   border-radius: 12px;
   background: linear-gradient(
     180deg,
@@ -27,6 +29,9 @@ export const colum = styled.div`
   transform: translate(10%, -50%);
   padding: 10px 2rem;
 
+  @media (max-width: 370px) {
+  }
+
   overflow: auto;
   ::-webkit-scrollbar {
     display: none;
@@ -38,7 +43,7 @@ export const boxUser = styled.button<I>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 2rem auto;
+  margin: 0.5rem auto;
   width: 100%;
   background-color: ${(h) =>
     h.selected ? 'rgba(114, 121, 161, 0.494)' : 'rgba(173, 173, 173, 0.494)'};
