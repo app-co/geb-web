@@ -55,7 +55,7 @@ export function AuthProvider({ children }: any) {
         const { token, user } = h.data
 
         localStorage.setItem(keyToken, token)
-        localStorage.setItem(keyUser, JSON.stringify(user)).log(token)
+        localStorage.setItem(keyUser, JSON.stringify(user))
         api.defaults.headers.common.Authorization = `Bearer ${token}`
 
         setData({ token, user })
