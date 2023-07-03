@@ -12,7 +12,7 @@ interface props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Button({ title, load = false, bg = 'global', ...rest }: props) {
   return (
-    <S.Container bg={bg} {...rest}>
+    <S.Container disabled={load} bg={bg} {...rest}>
       {load ? <Loading /> : <p>{title}</p>}
     </S.Container>
   )

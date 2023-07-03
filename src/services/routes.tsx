@@ -26,7 +26,7 @@ export const userRoutes = {
   put: {},
 
   delete: {
-    'delete-user': '/user/delete/',
+    'delete-user': '/user/delete',
   },
 }
 

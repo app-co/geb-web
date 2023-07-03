@@ -27,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
 
         color: #11133b;
 
-        background-color: #e7e7e7;
+        background-color: rgba(4, 4, 11, 1);
 
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;

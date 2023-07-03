@@ -1,12 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/authcontext'
-import { Cadastro } from '../pages/Cadastro'
-import { Convidados } from '../pages/Convidados'
 import { Home } from '../pages/Home'
 import { LogIn } from '../pages/LogIn'
-import { Users } from '../pages/Users'
-import { RouteApp } from './App'
-import { AuthRoute } from './Auth'
+import { Membros } from '../pages/Membros'
+import { NewMembro } from '../pages/NewMembro'
+import { Rank } from '../pages/Rank'
+import { Presenca } from '../pages/Presenca'
 
 export function Router() {
   const { user } = useAuth()
@@ -19,9 +18,16 @@ export function Router() {
     <Routes>
       <Route path="/" element={<LogIn />} />
       <Route path="/home" element={<PrivateRoue element={<Home />} />} />
-      <Route path="/users" element={<PrivateRoue element={<Users />} />} />
-      <Route path="/guest" element={<PrivateRoue element={<Convidados />} />} />
-      <Route path="/create" element={<PrivateRoue element={<Cadastro />} />} />
+      <Route path="/membros" element={<PrivateRoue element={<Membros />} />} />
+      <Route
+        path="/new-membro"
+        element={<PrivateRoue element={<NewMembro />} />}
+      />
+      <Route path="/rank" element={<PrivateRoue element={<Rank />} />} />
+      <Route
+        path="/presenca"
+        element={<PrivateRoue element={<Presenca />} />}
+      />
     </Routes>
   )
 }

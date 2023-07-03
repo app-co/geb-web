@@ -1,21 +1,18 @@
 import * as S from './styles'
+import Logo from '../../../public/images/logo.svg'
 
 export function Menu() {
   return (
     <S.Container>
-      <h1>Geb</h1>
+      <img alt="logo" src={Logo} />
 
-      <S.content>
-        <S.link to="/home">Início</S.link>
-        <S.link to="/users">Lista de Membros</S.link>
-        <S.link to="/create">Cadastrar membro</S.link>
-        {/* <S.link>Confirmar presença</S.link>
-        <S.link>Lista de presença</S.link>
-        <S.link style={{ marginTop: 40 }}>Ordem de B2B</S.link>
-        <S.link>Ordem de compra</S.link>
-        <S.link>Ordem de venda</S.link>
-        <S.link>Ranking</S.link> */}
-      </S.content>
+      <div className="links">
+        <S.link to="/home">HOME</S.link>
+        <S.link to="/membros">MEMBROS</S.link>
+        <S.link to="/new-membro">+ NOVO MEMBRO</S.link>
+        <S.link to="/rank">RANK</S.link>
+        <S.link to="/presenca">LISTA DE PRESENÇA</S.link>
+      </div>
     </S.Container>
   )
 }

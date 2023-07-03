@@ -18,12 +18,9 @@ import { Modal } from '../../components/Modal'
 import { EditUser } from '../../components/EditUser'
 import { FormHandles } from '@unform/core'
 import { Loading } from '../../components/Loading'
+import { Menu } from '../../components/Menu'
 
 export function Home() {
-  const updateRef = useRef<FormHandles>(null)
-  const [search, setSearch] = React.useState('')
-  const [selectId, setSelectId] = React.useState('')
-  const [openModa, setOpenModal] = React.useState(false)
   const user = useQuery('list-all-user', async () => {
     const rs = await api.get(userRoutes.get['list-all'])
     return rs.data as IUserDtos[]
@@ -32,137 +29,19 @@ export function Home() {
   const users = React.useMemo(() => {
     const us = (user.data as IUserDtos[]) || []
 
-    const list =
-      search !== ''
-        ? us.filter((h) => {
-            const nome = h.nome.toLocaleUpperCase()
-            if (nome.includes(search.toLocaleUpperCase())) {
-              return h
-            }
-            return null
-          })
-        : us
+    return us
+  }, [user.data])
 
-    return list
-  }, [search, user.data])
-
-  const userById = React.useMemo(() => {
-    const us = user.data || []
-
-    return us.find((h) => h.id === selectId)
-  }, [selectId, user.data])
-
-  const handleUpateMembro = React.useCallback(
-    async (data: IUserDtos) => {
-      const { nome, membro, senha } = data
-      console.log(data)
-      try {
-        const dados = {
-          nome,
-          membro,
-          senha,
-          id: selectId,
-        }
-
-        await api.post('/user/update-membro', dados).then((h) => {
-          setOpenModal(false)
-        })
-      } catch (err) {
-        console.log('erro', err)
-      }
-    },
-    [selectId],
-  )
-
-  if (user.isLoading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <h1>CARREGANDO...</h1>
-        <Loading />
-      </div>
-    )
-  }
+  const totalMembro = users.length
 
   return (
-    <S.Container>
-      <Form
-        ref={updateRef}
-        onSubmit={handleUpateMembro}
-        initialData={{
-          nome: userById?.nome,
-          membro: userById?.membro,
-        }}
-      >
-        <Modal
-          submit={() => updateRef.current?.submitForm()}
-          cancel={() => setOpenModal(false)}
-          isOpen={openModa}
-          title="EDITAR MEMBRO"
-        >
-          <EditUser />
-        </Modal>
-      </Form>
+    <div>
+      <Menu />
+      <S.Container>
+        <h1>GEB NET WORKING</h1>
 
-      <S.colum>
-        <Form onSubmit={() => {}} style={{ position: 'relative' }}>
-          <Input
-            onChange={(h) => setSearch(h.currentTarget.value)}
-            name="search"
-            placeholder="pesquisar por nome"
-          />
-        </Form>
-        {users.map((h) => (
-          <S.boxUser
-            selected={h.id === selectId}
-            onClick={() => setSelectId(h.id)}
-            key={h.id}
-          >
-            <div className="box">
-              <img className="avatar" alt="avata" src={h.profile.avatar} />
-
-              <div className="content">
-                <h3>{h.nome}</h3>
-                <p>{h.profile.workName}</p>
-              </div>
-            </div>
-          </S.boxUser>
-        ))}
-      </S.colum>
-
-      <S.content>
-        <div className="buttons">
-          <Button
-            onClick={() => setOpenModal(true)}
-            title="EDITAR MEMBRO"
-            bg="global"
-          />
-          <Button title="INATIVAR MEMBRO" bg="submit" />
-          <Button title="DELETAR MEMBRO" bg="delet" />
-        </div>
-
-        <h4 style={{ color: '#fff', marginTop: '2rem' }}>
-          Membro: {userById?.nome}
-        </h4>
-        <div className="scroll">
-          <div className="grid">
-            <ChartPresenca id={selectId} />
-            <ChartB2b id={selectId} />
-            <ChartConsumo id={selectId} />
-            <ChartPadrinho id={selectId} />
-            <ChartIndicacao id={selectId} />
-            <ChartDonate id={selectId} />
-            <ChartInvit id={selectId} />
-          </div>
-        </div>
-      </S.content>
-    </S.Container>
+        <h3>Total de membros: {totalMembro}</h3>
+      </S.Container>
+    </div>
   )
 }
