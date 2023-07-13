@@ -1,7 +1,8 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface I {
   selected: boolean
+  inativit: boolean
 }
 
 export const Container = styled.div`
@@ -45,9 +46,20 @@ export const boxUser = styled.button<I>`
   justify-content: center;
   margin: 0.5rem auto;
   width: 100%;
-  background-color: ${(h) =>
-    h.selected ? 'rgba(114, 121, 161, 0.494)' : 'rgba(173, 173, 173, 0.494)'};
+  background-color: rgba(255, 255, 255, 0.494);
   padding: 10px 5px;
+
+  ${(h) =>
+    h.selected &&
+    css`
+      background-color: rgba(39, 48, 94, 0.699);
+    `}
+
+  ${(h) =>
+    h.inativit &&
+    css`
+      background-color: rgba(155, 28, 28, 0.699);
+    `}
 
   &:hover {
     background-color: rgba(114, 121, 161, 0.494);

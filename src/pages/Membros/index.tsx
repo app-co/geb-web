@@ -34,16 +34,26 @@ export function Membros() {
   const users = React.useMemo(() => {
     const us = (user.data as IUserDtos[]) || []
 
+    const newList = us.map((h) => {
+      const [nome, sobrenome] = h.nome.split(' ').map(String)
+      console.log(nome, sobrenome)
+
+      return {
+        ...h,
+        nome: nome + ' ' + sobrenome,
+      }
+    })
+
     const list =
       search !== ''
-        ? us.filter((h) => {
+        ? newList.filter((h) => {
             const nome = h.nome.toLocaleUpperCase()
             if (nome.includes(search.toLocaleUpperCase())) {
               return h
             }
             return null
           })
-        : us
+        : newList
 
     return list
   }, [search, user.data])
@@ -97,6 +107,17 @@ export function Membros() {
       })
   }, [userById?.membro])
 
+  const handleInativateMembro = React.useCallback(async () => {
+    await api
+      .put('/situation/update-situation', {
+        fk_id_user: userById?.id,
+        inativo: !userById?.situation.inativo,
+      })
+      .then(() => {
+        user.refetch()
+      })
+  }, [userById])
+
   if (user.isLoading) {
     return (
       <div
@@ -147,6 +168,7 @@ export function Membros() {
           </Form>
           {users.map((h) => (
             <S.boxUser
+              inativit={h.situation.inativo}
               selected={h.id === selectId}
               onClick={() => setSelectId(h.id)}
               key={h.id}
@@ -170,7 +192,15 @@ export function Membros() {
               title="EDITAR MEMBRO"
               bg="global"
             />
-            {/* <Button title="INATIVAR MEMBRO" bg="submit" /> */}
+            <Button
+              onClick={handleInativateMembro}
+              title={
+                userById?.situation.inativo
+                  ? 'REATIVAR MEMBRO'
+                  : 'INATIVAR MEMBRO'
+              }
+              bg="submit"
+            />
             <Button
               load={load}
               onClick={handleDeleteUser}
