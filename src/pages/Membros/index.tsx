@@ -80,7 +80,7 @@ export function Membros() {
           id: selectId,
         }
 
-        await api.post('/user/update-membro', dados).then((h) => {
+        await api.patch('/user/update-membro', dados).then((h) => {
           setLoad(false)
           setOpenModal(false)
         })
