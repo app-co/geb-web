@@ -4,6 +4,7 @@ import { cor } from '../../styles/color'
 export const Container = styled.div`
   display: flex;
   width: 100vw;
+
 `
 
 export const content = styled.div`
@@ -14,7 +15,7 @@ export const content = styled.div`
 `
 
 export const boxLogo = styled.div`
-  background-color: ${cor.blue[3]};
+  /* background-color: ${cor.blue[3]}; */
 `
 
 export const boxForm = styled.div`

@@ -25,9 +25,9 @@ export const GlobalStyle = createGlobalStyle`
 
     body {
 
-        color: #11133b;
+        color: '#232929';
 
-        background-color: rgba(4, 4, 11, 1);
+        background-color: '#233030';
 
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -40,8 +40,21 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     h2 {
-      font-size: calc(12px + 2vw);
-      font-weight: 800;
+      @media (min-width: 350px) {
+        font-size: calc(1.5rem + 2vw);
+      }
+
+      @media (min-width: 750px) {
+        font-size: calc(1rem + 2.2vw);
+      }
+
+      @media (min-width: 1080px) {
+        font-size: calc(1rem + 1.6vw);
+      }
+
+      @media (min-width: 1300px) {
+        font-size: calc(1rem + 1.2vw);
+      }
     }
 
     h3 {

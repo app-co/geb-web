@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext } from 'react'
 import { IUserDtos } from '../dtos'
 import { api } from '../services'
 
@@ -24,25 +24,45 @@ const keyToken = '@geb:tokn'
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: any) {
-  const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem(keyToken)
-    const user = localStorage.getItem(keyUser)
+  const [data, setData] = React.useState<AuthState>({} as AuthState)
+  const [loading, setLoading] = React.useState<boolean>(false)
 
-    if (token && user) {
-      api.defaults.headers.common.Authorization = `Bearer ${token[1]}`
+  // const [data, setData] = useState<AuthState>(() => {
+  //   const token = localStorage.getItem(keyToken)
+  //   const user = localStorage.getItem(keyUser)
 
-      return { token, user: JSON.parse(user) }
-    }
+  //   if (token && user) {
+  //     api.defaults.headers.common.Authorization = `Bearer ${token[1]}`
 
-    return {} as AuthState
-  })
+  //     return { token, user: JSON.parse(user) }
+  //   }
 
-  React.useEffect(() => {
+  //   return {} as AuthState
+  // })
+
+  const updateDataUser = React.useCallback(async (token: string) => {
+    api.defaults.headers.common.Authorization = `Bearer ${token}`
+
+    await api.get('/user/find-user-by-id').then(async (h) => {
+      const user = h.data
+      setData({ token, user })
+    })
+  }, [])
+
+  const LoadingUser = useCallback(async () => {
+    setLoading(true)
+
     const token = localStorage.getItem(keyToken)
 
     if (token) {
-      api.defaults.headers.common.Authorization = `Bearer ${token}`
+      updateDataUser(token)
     }
+
+    setLoading(false)
+  }, [updateDataUser])
+
+  React.useEffect(() => {
+    LoadingUser()
   }, [])
 
   const signIn = useCallback(async ({ membro, senha }: IUserCredentials) => {
@@ -51,21 +71,17 @@ export function AuthProvider({ children }: any) {
         membro,
         senha,
       })
-      .then((h) => {
+      .then(async (h) => {
         const { token, user } = h.data
-
-        localStorage.setItem(keyToken, token)
-        localStorage.setItem(keyUser, JSON.stringify(user))
         api.defaults.headers.common.Authorization = `Bearer ${token}`
 
-        setData({ token, user })
+        await api.get('/user/find-user-by-id').then(async (h) => {
+          const user = h.data
+          setData({ token, user })
+          localStorage.setItem(keyToken, token)
+          setData({ token, user })
+        })
       })
-    // .catch((h) => {
-    //   if (h.message === 'Network Error') {
-    //     return alert('Erro de conexão com o servidor')
-    //   }
-    //   return alert(`Ops! Algo deu errado. ${h.response.data.message}`)
-    // })
   }, [])
 
   const logOut = useCallback(async () => {

@@ -4,8 +4,7 @@ import { cor } from '../../styles/color'
 import { Link } from 'react-router-dom'
 
 export const Container = styled.div`
-  background-color: rgba(7, 21, 102, 1);
-  height: 3.4rem;
+  background-color: ${cor.bg.light};
 
   display: flex;
   padding: 10px 2rem;
@@ -13,12 +12,11 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  .links {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 50%;
+  img {
+    width: 6rem;
+    height: 4rem;
   }
+
 `
 
 export const content = styled.div`

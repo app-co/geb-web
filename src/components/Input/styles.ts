@@ -22,8 +22,8 @@ export const Box = styled.div<PropsInput>`
     font-weight: 900;
 
     ${(h) =>
-      h.isFilled &&
-      css`
+    h.isFilled &&
+    css`
         color: ${cor.orange[1]}
         font-weight: 500;
       `};
@@ -39,19 +39,19 @@ export const Container = styled.div<PropsInput>`
   align-items: center;
   border-radius: 7px;
 
-  background-color: #f0f0f0;
+  background-color: rgba(48, 48, 48, 1);
   margin: 1rem 0;
 
   ${(h) =>
     h.isFocus &&
     css`
-      border: 2px solid ${cor.orange[1]};
+      border: 2px solid ${cor.focus.a};
     `}
 
   ${(h) =>
     h.isFilled &&
     css`
-      border: 2px solid ${cor.orange[1]};
+      border: 2px solid ${cor.focus.a};
     `}
 
     ${(h) =>
@@ -66,5 +66,6 @@ export const Container = styled.div<PropsInput>`
     width: 100%;
     height: 100%;
     background: #00000000;
+    color: ${cor.bg.light};
   }
 `

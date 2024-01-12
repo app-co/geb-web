@@ -8,6 +8,7 @@ export interface IUserDtos {
   adm: boolean
   token: string
   media: number
+  hub: 'GEB' | 'CLUB_MENTORIA'
 
   //! ! FK_USERS
   situation: ISituationUser
@@ -188,4 +189,36 @@ export interface IIndication {
   createdAt: Date | string
   updated_at: Date | string
   validate: boolean
+}
+
+type T =
+  | 'B2B'
+  | 'CONSUMO_IN'
+  | 'CONSUMO_OUT'
+  | 'PADRINHO'
+  | 'PRESENCA'
+  | 'INDICATION'
+  | 'DONATE'
+  | 'INVIT'
+
+export interface IRelation {
+  id: string
+  objto: any
+  situation: boolean
+  ponts: number
+  fk_user_id: string
+  prestador_id: string
+  client_id: string
+  hub: string
+  type: T
+  created_at: Date
+  updated_at: Date
+}
+
+export interface IMetric {
+  usersUp: number
+  metricValidByYear: number
+  metricValidByMonth: number
+  padding_media_transaction: number
+  valid_media_transaction: number
 }

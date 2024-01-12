@@ -24,4 +24,13 @@ export const cor = {
     2: '#8d4900',
     3: '#442200',
   },
+
+  bg: {
+    light: '#D9D9D9',
+    dark: '#232020'
+  },
+
+  focus: {
+    a: '#FFCD00'
+  }
 }

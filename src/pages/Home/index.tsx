@@ -1,47 +1,59 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable camelcase */
+import { HandCoins, PiggyBank, Wallet } from '@phosphor-icons/react'
+import { UsersThree } from '@phosphor-icons/react/dist/ssr'
+import React from 'react'
+import { Layout } from '../../components/Layout'
+import { ChartMetricConsumo } from '../../components/charts/MetricConsumo'
+import { useRelation } from '../../hooks/querys'
+import { convertNumberToMoney } from '../../utils/unitts'
+import { BalanceCard } from './components/BalanceCard'
 import * as S from './styles'
-import { Button } from '../../components/Button'
-import { ChartPresenca } from '../../components/charts/ChartPresenca'
-import { ChartB2b } from '../../components/charts/ChartB2b'
-import { ChartConsumo } from '../../components/charts/ChartConsumo'
-import { ChartPadrinho } from '../../components/charts/ChartPadrinho'
-import { ChartIndicacao } from '../../components/charts/ChartIndicacao'
-import { ChartDonate } from '../../components/charts/ChartDonate'
-import { ChartInvit } from '../../components/charts/ChartInvit'
-import { useQuery } from 'react-query'
-import { api } from '../../services'
-import { userRoutes } from '../../services/routes'
-import { IUserDtos } from '../../dtos'
-import { Form } from '@unform/web'
-import { Input } from '../../components/Input'
-import React, { useRef } from 'react'
-import { Modal } from '../../components/Modal'
-import { EditUser } from '../../components/EditUser'
-import { FormHandles } from '@unform/core'
-import { Loading } from '../../components/Loading'
-import { Menu } from '../../components/Menu'
 
 export function Home() {
-  const user = useQuery('list-all-user', async () => {
-    const rs = await api.get(userRoutes.get['list-all'])
-    return rs.data as IUserDtos[]
-  })
+  const { getMetric } = useRelation()
 
-  const users = React.useMemo(() => {
-    const us = (user.data as IUserDtos[]) || []
-
-    return us
-  }, [user.data])
-
-  const totalMembro = users.length
+  const metricas = React.useMemo(() => {
+    return {
+      userUp: String(getMetric?.usersUp),
+      media_pedding: convertNumberToMoney(
+        getMetric?.padding_media_transaction / 100 ?? 0,
+      ),
+      media_valid: convertNumberToMoney(
+        getMetric?.valid_media_transaction / 100 ?? 0,
+      ),
+      month: convertNumberToMoney(getMetric?.metricValidByMonth / 100 ?? 0),
+      year: convertNumberToMoney(getMetric?.metricValidByYear / 100 ?? 0),
+    }
+  }, [getMetric])
 
   return (
-    <div>
-      <Menu />
-      <S.Container>
-        <h1>GEB NET WORKING</h1>
+    <S.Container>
+      <Layout>
+        <S.main>
+          <S.gridCardBalanc>
+            <BalanceCard valu={metricas.userUp} title="MEMBROS ATIVOS">
+              <UsersThree weight="duotone" />
+            </BalanceCard>
 
-        <h3>Total de membros: {totalMembro}</h3>
-      </S.Container>
-    </div>
+            <BalanceCard valu={metricas.month} title="ACUMULADO NO MÊS">
+              <HandCoins weight="duotone" />
+            </BalanceCard>
+
+            <BalanceCard valu={metricas.year} title="ACUMULADO NO ANO">
+              <PiggyBank weight="duotone" />
+            </BalanceCard>
+
+            <BalanceCard valu={metricas.media_valid} title="MEDIA DE NEGÓCIOS">
+              <Wallet weight="duotone" />
+            </BalanceCard>
+          </S.gridCardBalanc>
+
+          <S.boxChart>
+            <ChartMetricConsumo />
+          </S.boxChart>
+        </S.main>
+      </Layout>
+    </S.Container>
   )
 }

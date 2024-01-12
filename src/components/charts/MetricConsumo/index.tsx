@@ -1,14 +1,13 @@
-import React, { useRef } from 'react'
-import * as S from './styles'
+import { getMonth } from 'date-fns'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { api } from '../../../services'
+import React, { useRef } from 'react'
 import { useQuery } from 'react-query'
-import { consumoRoutes } from '../../../services/routes'
-import { ITransaction } from '../../../dtos'
-import { getMonth } from 'date-fns'
-import { Loading } from '../../Loading'
 import { useRelation } from '../../../hooks/querys'
+import { api } from '../../../services'
+import { consumoRoutes } from '../../../services/routes'
+import { cor } from '../../../styles/color'
+import { Loading } from '../../Loading'
 
 interface I {
   id: string
@@ -19,8 +18,8 @@ interface IResult {
   qnt: number
 }
 
-export function ChartConsumo({ id }: I) {
-  const {getAllRelation} = useRelation()
+export function ChartMetricConsumo({ id }: I) {
+  const { getAllRelation } = useRelation()
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
   const { data, isLoading } = useQuery('all-consumo', async () => {
     const rs = await api.get(consumoRoutes.get['all-consumo'])
@@ -28,9 +27,14 @@ export function ChartConsumo({ id }: I) {
   })
 
   const chart = React.useMemo(() => {
-    const b2b = (data as ITransaction[]) || ([] as ITransaction[])
+    const relation = getAllRelation || []
 
-    const fil = b2b.filter((h) => h.prestador_id === id)
+    const fil = relation.filter((h) => {
+      if (h.type === 'CONSUMO_OUT' && h.situation) {
+        return h
+      }
+      return null
+    })
 
     const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
@@ -55,10 +59,23 @@ export function ChartConsumo({ id }: I) {
     })
 
     return result
-  }, [data, id])
+  }, [getAllRelation])
 
   const options: Highcharts.Options = {
+    chart: {
+      backgroundColor: cor.bg.dark,
+      borderWidth: 1,
+      borderRadius: 10,
+      borderColor: cor.bg.dark,
+      plotBackgroundColor: cor.bg.dark,
+      // plotShadow: true,
+      plotBorderWidth: 1,
+      plotBorderColor: '#5e5e5e',
+    },
     title: {
+      style: {
+        color: '#cccccc',
+      },
       text: 'CONSUMO (vendas)',
     },
     xAxis: {
@@ -78,10 +95,12 @@ export function ChartConsumo({ id }: I) {
       ],
       crosshair: true,
     },
+
     series: [
       {
         type: 'column',
-        name: 'Qunatidade de b2b realizado durante o mês',
+        color: cor.focus.a,
+        name: 'Qunatidade de consumo realizado no mês',
         data: chart.map((h) => h.qnt),
       },
     ],
@@ -103,13 +122,12 @@ export function ChartConsumo({ id }: I) {
       </div>
     )
   }
+
   return (
-    <S.Container>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        ref={chartComponentRef}
-      />
-    </S.Container>
+    <HighchartsReact
+      highcharts={Highcharts}
+      options={options}
+      ref={chartComponentRef}
+    />
   )
 }
