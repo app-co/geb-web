@@ -1,5 +1,7 @@
 import { Form } from '@unform/web'
 import React from 'react'
+import { BsTrash } from 'react-icons/bs'
+import { FaUserAltSlash } from 'react-icons/fa'
 import { BalanceCard } from '../../components/BalanceCard'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
@@ -9,6 +11,7 @@ import { ChartConsumo } from '../../components/charts/ChartConsumo'
 import { useAuth } from '../../context/authcontext'
 import { IUserDtos } from '../../dtos'
 import { useUser } from '../../hooks/querys'
+import { api } from '../../services'
 import * as S from './styles'
 
 type TOption = 'metric' | 'config'
@@ -32,7 +35,43 @@ export function Membros() {
     }
   }, [setUser])
 
-  console.log({ option })
+  const handleUpateMembro = React.useCallback(
+    async (data: IUserDtos) => {
+      const { nome, membro, senha } = data
+
+      try {
+        const dados = {
+          nome,
+          membro,
+          senha,
+          id: setUser?.id,
+        }
+
+        await api.patch('/user/update-membro', dados)
+      } catch (err) {
+        console.log('erro', err)
+      }
+    },
+    [setUser?.id],
+  )
+
+  const handleDeleteUser = React.useCallback(async () => {
+    await api
+      .delete(`/user/delete/${setUser?.membro}`)
+      .then(() => {
+        alert('Membro deletado')
+      })
+      .catch((h) => {
+        console.log(h)
+      })
+  }, [setUser?.membro])
+
+  const handleInativateMembro = React.useCallback(async () => {
+    await api.put('/situation/update-situation', {
+      fk_id_user: setUser?.id,
+      inativo: !setUser?.situation.inativo,
+    })
+  }, [setUser?.id, setUser?.situation.inativo])
 
   return (
     <div>
@@ -79,8 +118,9 @@ export function Membros() {
               )}
               {option === 'config' && (
                 <S.form>
-                  <h3>Alterar Cadastro</h3>
+                  <h3 style={{ marginBottom: '2rem' }}>Alterar Cadastro</h3>
                   <Form
+                    onSubmit={handleUpateMembro}
                     initialData={{
                       nome: setUser.nome,
                       membro: setUser.membro,
@@ -89,7 +129,38 @@ export function Membros() {
                     <Input label="Nome" placeholder="Nome" name="nome" />
                     <Input label="Membro" placeholder="Membro" name="membro" />
                     <Input label="Senha" placeholder="Senha" name="senha" />
+
+                    <Button type="submit" title="SALVAR" />
                   </Form>
+
+                  <div
+                    style={{
+                      alignItems: 'center',
+                      marginTop: '2rem',
+                      display: 'flex',
+                      gap: '15px',
+                      marginBottom: '10px;',
+                    }}
+                  >
+                    <FaUserAltSlash />
+                    <h3 style={{}}>Banir usuário?</h3>
+                  </div>
+                  <Button bg="delet" title="BANIR" />
+
+                  <div
+                    style={{
+                      alignItems: 'center',
+                      marginTop: '2rem',
+                      display: 'flex',
+                      gap: '15px',
+                      marginBottom: '10px;',
+                    }}
+                  >
+                    <BsTrash />
+                    <h3>Deletar usuário?</h3>
+                  </div>
+
+                  <Button bg="delet" title="DELETAR" />
                 </S.form>
               )}
             </S.Container>

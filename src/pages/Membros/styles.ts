@@ -53,10 +53,6 @@ export const form = styled.div`
   background-color: ${cor.bg.light};
   padding: 10px;
   border-radius: 10px;
-
-  h3 {
-    margin-bottom: 2rem;
-  }
 `
 
 export const gridCardBalanc = styled.div`
