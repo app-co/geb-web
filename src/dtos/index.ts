@@ -17,6 +17,8 @@ export interface IUserDtos {
   region: IRegion
   Stars: IStars[]
   RelationShip: IRelation[]
+  created_at: Date
+  updated_at: Date
 }
 
 export interface ISituationUser {

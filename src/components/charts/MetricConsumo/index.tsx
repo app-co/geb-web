@@ -18,7 +18,7 @@ interface IResult {
   qnt: number
 }
 
-export function ChartMetricConsumo({ id }: I) {
+export function ChartMetricConsumo() {
   const { getAllRelation } = useRelation()
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
   const { data, isLoading } = useQuery('all-consumo', async () => {

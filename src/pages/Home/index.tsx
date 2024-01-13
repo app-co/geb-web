@@ -17,13 +17,13 @@ export function Home() {
     return {
       userUp: String(getMetric?.usersUp),
       media_pedding: convertNumberToMoney(
-        getMetric?.padding_media_transaction / 100 ?? 0,
+        getMetric!.padding_media_transaction / 100 ?? 0,
       ),
       media_valid: convertNumberToMoney(
-        getMetric?.valid_media_transaction / 100 ?? 0,
+        getMetric!.valid_media_transaction / 100 ?? 0,
       ),
-      month: convertNumberToMoney(getMetric?.metricValidByMonth / 100 ?? 0),
-      year: convertNumberToMoney(getMetric?.metricValidByYear / 100 ?? 0),
+      month: convertNumberToMoney(getMetric!.metricValidByMonth / 100 ?? 0),
+      year: convertNumberToMoney(getMetric!.metricValidByYear / 100 ?? 0),
     }
   }, [getMetric])
 

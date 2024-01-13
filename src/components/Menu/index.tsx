@@ -7,7 +7,7 @@ export function Menu() {
     <S.Container>
       <img alt="logo" src={Logo} />
 
-      <Button>SAIR</Button>
+      <Button title="SAIR" />
     </S.Container>
   )
 }

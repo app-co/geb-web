@@ -58,7 +58,8 @@ export function Table({ userSelectd, getAllUsers }: I) {
     <S.Container>
       <S.TableContainer>
         <S.TableHeader>
-          <Form>
+          <Form onSubmit={() => { }} >
+
             <Input
               onChange={(h) => setSearch(h.currentTarget.value)}
               placeholder="Pesquisar por nome"
