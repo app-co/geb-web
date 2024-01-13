@@ -8,6 +8,7 @@ import { Input } from '../../components/Input'
 import { Layout } from '../../components/Layout'
 import { Table } from '../../components/Table'
 import { ChartConsumo } from '../../components/charts/ChartConsumo'
+import { useToast } from '../../context/ToastContext'
 import { useAuth } from '../../context/authcontext'
 import { IUserDtos } from '../../dtos'
 import { useUser } from '../../hooks/querys'
@@ -19,6 +20,7 @@ type TOption = 'metric' | 'config'
 export function Membros() {
   const { user } = useAuth()
   const { getAllUser } = useUser(user.hub)
+  const { addToast } = useToast()
 
   const [setUser, setUserSl] = React.useState<IUserDtos>()
   const [goback, setGoback] = React.useState<boolean>(true)
@@ -43,16 +45,27 @@ export function Membros() {
         const dados = {
           nome,
           membro,
-          senha,
+          senha: senha ?? null,
           id: setUser?.id,
         }
 
         await api.patch('/user/update-membro', dados)
+
+        addToast({
+          title: 'SUCESSO',
+          type: 'success',
+          description: 'As alterações foi realizado com sucesso!',
+        })
       } catch (err) {
+        addToast({
+          title: 'Erro',
+          type: 'error',
+          description: 'Ocorreu um erro ao realizar sua configurção',
+        })
         console.log('erro', err)
       }
     },
-    [setUser?.id],
+    [addToast, setUser?.id],
   )
 
   const handleDeleteUser = React.useCallback(async () => {
@@ -71,7 +84,13 @@ export function Membros() {
       fk_id_user: setUser?.id,
       inativo: !setUser?.situation.inativo,
     })
-  }, [setUser?.id, setUser?.situation.inativo])
+
+    addToast({
+      title: 'SUCESSO',
+      type: 'success',
+      description: 'As alterações foi realizado com sucesso!',
+    })
+  }, [addToast, setUser?.id, setUser?.situation.inativo])
 
   return (
     <div>
