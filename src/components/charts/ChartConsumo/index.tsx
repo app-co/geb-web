@@ -5,7 +5,6 @@ import React, { useRef } from 'react'
 import { useExtratoUser } from '../../../hooks/querys'
 import { cor } from '../../../styles/color'
 import { Loading } from '../../Loading'
-import * as S from './styles'
 
 interface I {
   id: string
@@ -115,12 +114,10 @@ export function ChartConsumo({ id }: I) {
     )
   }
   return (
-    <S.Container>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        ref={chartComponentRef}
-      />
-    </S.Container>
+    <HighchartsReact
+      highcharts={Highcharts}
+      options={options}
+      ref={chartComponentRef}
+    />
   )
 }

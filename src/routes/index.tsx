@@ -1,14 +1,16 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from '../context/authcontext'
 import { Home } from '../pages/Home'
 import { LogIn } from '../pages/LogIn'
 import { Membros } from '../pages/Membros'
 import { NewMembro } from '../pages/NewMembro'
-import { Rank } from '../pages/Rank'
 import { Presenca } from '../pages/Presenca'
+import { Rank } from '../pages/Rank'
 
 export function Router() {
   const { user } = useAuth()
+
+  console.log({ user })
 
   function PrivateRoue({ path, element }: any) {
     return user ? element : <Navigate to="/" replace />

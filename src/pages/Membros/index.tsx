@@ -132,7 +132,9 @@ export function Membros() {
                       <span>ico</span>
                     </BalanceCard>
                   </S.gridCardBalanc>
-                  <ChartConsumo id={setUser.id} />
+                  <div style={{ marginTop: '4rem' }}>
+                    <ChartConsumo id={setUser.id} />
+                  </div>
                 </S.main>
               )}
               {option === 'config' && (
