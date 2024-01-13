@@ -237,5 +237,5 @@ export interface IExtratoUser {
   totalConsumo: string
   totalVenda: string
   invit: IRelation[]
-  allRelation: []
+  allRelation: IRelation[]
 }

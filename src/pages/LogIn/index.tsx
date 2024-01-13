@@ -1,13 +1,13 @@
-import React, { useRef } from 'react'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
-import { Input } from '../../components/Input'
-import { useAuth } from '../../context/authcontext'
-import { useToast } from '../../context/ToastContext'
-import * as S from './styles'
+import React, { useRef } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
+import { Input } from '../../components/Input'
+import { useToast } from '../../context/ToastContext'
+import { useAuth } from '../../context/authcontext'
 import { getValidationErrors } from '../../utils/getValidationErrors'
-import { Navigate, Outlet, redirect, useNavigate } from 'react-router-dom'
+import * as S from './styles'
 
 export function LogIn() {
   const { signIn } = useAuth()
