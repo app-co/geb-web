@@ -7,9 +7,9 @@ interface IProps {
 }
 
 const variant = {
-  submit: cor.sucess[1],
+  submit: cor.focus.a,
   delet: cor.alert[1],
-  global: cor.blue[2],
+  global: cor.focus.a,
 }
 export const Container = styled.button<IProps>`
   padding: 10px 20px;
@@ -22,7 +22,6 @@ export const Container = styled.button<IProps>`
   background-color: ${(h) => variant[h.bg]};
 
   p {
-    color: #fff;
     font-weight: 600;
   }
 `

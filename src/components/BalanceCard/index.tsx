@@ -2,8 +2,8 @@ import * as S from './styles'
 
 type T = {
   children: React.ReactNode
-  valu: string
-  title: string
+  valu?: string
+  title?: string
 }
 
 export function BalanceCard({ children, valu, title }: T) {

@@ -3,11 +3,11 @@
 import { HandCoins, PiggyBank, Wallet } from '@phosphor-icons/react'
 import { UsersThree } from '@phosphor-icons/react/dist/ssr'
 import React from 'react'
+import { BalanceCard } from '../../components/BalanceCard'
 import { Layout } from '../../components/Layout'
 import { ChartMetricConsumo } from '../../components/charts/MetricConsumo'
 import { useRelation } from '../../hooks/querys'
 import { convertNumberToMoney } from '../../utils/unitts'
-import { BalanceCard } from './components/BalanceCard'
 import * as S from './styles'
 
 export function Home() {

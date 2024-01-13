@@ -16,6 +16,7 @@ export interface IUserDtos {
   links: ILinkDto
   region: IRegion
   Stars: IStars[]
+  RelationShip: IRelation[]
 }
 
 export interface ISituationUser {
@@ -221,4 +222,18 @@ export interface IMetric {
   metricValidByMonth: number
   padding_media_transaction: number
   valid_media_transaction: number
+}
+
+export interface IExtratoUser {
+  consumo: IRelation[]
+  venda: IRelation[]
+  b2b: IRelation[]
+  donate: IRelation[]
+  indication: IRelation[]
+  padrinho: IRelation[]
+  presenca: IRelation[]
+  totalConsumo: string
+  totalVenda: string
+  invit: IRelation[]
+  allRelation: []
 }

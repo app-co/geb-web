@@ -2,30 +2,29 @@
 import { Form } from '@unform/web'
 import { format } from 'date-fns'
 import React, { useState } from 'react'
-import { useAuth } from '../../context/authcontext'
 import { IUserDtos } from '../../dtos'
-import { useUser } from '../../hooks/querys'
 import { cor } from '../../styles/color'
 import { Input } from '../Input'
 import * as S from './styles'
 
+interface I {
+  userSelectd: (user: IUserDtos) => void
+  getAllUsers: IUserDtos[]
+}
 
-export function Table() {
-  const { user } = useAuth()
+export function Table({ userSelectd, getAllUsers }: I) {
   const [pageSize, setPageSize] = useState<number>(10) // Defina um valor padrão conforme necessário
   const [currentPage, setCurrentPage] = useState<number>(1) // Defina um valor padrão conforme necessário
-  const { getAllUser } = useUser(user.hub)
   const [search, setSearch] = React.useState<string>('')
-  const [userSelected, setUserSelected] = React.useState<IUserDtos>()
 
-  const users = getAllUser || []
-
+  const users = getAllUsers ?? []
   // Função para lidar com a mudança de página
   const totalItems = users.length
   const totalPages = Math.ceil(totalItems / pageSize)
 
   const startIndex = (currentPage - 1) * pageSize
   const endIndex = startIndex + pageSize
+
   const currentItems = users.slice(startIndex, endIndex)
 
   const userList =
@@ -51,10 +50,8 @@ export function Table() {
   }
 
   const handleSelectUser = React.useCallback(async (user: IUserDtos) => {
-    setSearch(user.nome)
-
-  }, [])
-
+    userSelectd(user)
+  }, [userSelectd])
 
 
   return (
@@ -110,7 +107,7 @@ export function Table() {
           {/* Renderizar botões de páginação aqui */}
           <S.PageButton
             onClick={() => handlePageChange(currentPage + 1)}
-          // disabled={}
+            disabled={currentPage === totalPages}
           >
             Próxima
           </S.PageButton>

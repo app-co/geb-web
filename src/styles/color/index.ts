@@ -27,10 +27,10 @@ export const cor = {
 
   bg: {
     light: '#D9D9D9',
-    dark: '#232020'
+    dark: '#232020',
   },
 
   focus: {
-    a: '#FFCD00'
-  }
+    a: '#FFCD00',
+  },
 }

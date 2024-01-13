@@ -1,14 +1,11 @@
-import React, { useRef } from 'react'
-import * as S from './styles'
+import { format, getMonth } from 'date-fns'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { api } from '../../../services'
-import { useQuery } from 'react-query'
-import { consumoRoutes } from '../../../services/routes'
-import { ITransaction } from '../../../dtos'
-import { getMonth } from 'date-fns'
+import React, { useRef } from 'react'
+import { useExtratoUser } from '../../../hooks/querys'
+import { cor } from '../../../styles/color'
 import { Loading } from '../../Loading'
-import { useRelation } from '../../../hooks/querys'
+import * as S from './styles'
 
 interface I {
   id: string
@@ -20,17 +17,20 @@ interface IResult {
 }
 
 export function ChartConsumo({ id }: I) {
-  const {getAllRelation} = useRelation()
+  const { getEtrato, isLoading } = useExtratoUser(id)
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
-  const { data, isLoading } = useQuery('all-consumo', async () => {
-    const rs = await api.get(consumoRoutes.get['all-consumo'])
-    return rs.data
-  })
 
   const chart = React.useMemo(() => {
-    const b2b = (data as ITransaction[]) || ([] as ITransaction[])
+    const relations = getEtrato?.allRelation ?? []
+    const currentDate = format(new Date(), 'MM/yy')
 
-    const fil = b2b.filter((h) => h.prestador_id === id)
+    const releationByDate = relations.filter((h) => {
+      const date = format(new Date(h.updated_at), 'MM/yy')
+      if (date === currentDate) {
+        return h
+      }
+      return null
+    })
 
     const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
@@ -42,8 +42,8 @@ export function ChartConsumo({ id }: I) {
         qnt: 0,
       }
 
-      fil.forEach((h) => {
-        const mes = getMonth(new Date(h.created_at)) + 1
+      releationByDate.forEach((h) => {
+        const mes = getMonth(new Date(h.updated_at)) + 1
         if (m === mes) {
           data = {
             mes: m,
@@ -55,9 +55,20 @@ export function ChartConsumo({ id }: I) {
     })
 
     return result
-  }, [data, id])
+  }, [getEtrato])
 
   const options: Highcharts.Options = {
+    chart: {
+      backgroundColor: cor.bg.dark,
+      borderWidth: 1,
+      borderRadius: 10,
+      borderColor: cor.bg.dark,
+      plotBackgroundColor: cor.bg.dark,
+      plotShadow: true,
+      plotBorderWidth: 1,
+      plotBorderColor: '#5e5e5e',
+    },
+
     title: {
       text: 'CONSUMO (vendas)',
     },

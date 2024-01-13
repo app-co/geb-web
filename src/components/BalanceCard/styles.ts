@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { cor } from '../../../../styles/color'
+import { cor } from '../../styles/color'
 
 export const Container = styled.div`
   background-color: #ffcd00;

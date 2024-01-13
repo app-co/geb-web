@@ -1,5 +1,5 @@
 import { api } from '.'
-import { IMetric, IRelation, IStars, IUserDtos } from '../dtos'
+import { IExtratoUser, IMetric, IRelation, IStars, IUserDtos } from '../dtos'
 
 export async function requestGetAllUsers(hub: string) {
   const { data } = await api.get(`/user/list-all-user/${hub}`)
@@ -27,6 +27,12 @@ export async function requestGetAllUsers(hub: string) {
     })
 
   return list
+}
+
+export async function requestExtratoUser(id: string) {
+  const { data } = await api.get(`/relation/extrato-valid/${id}`)
+
+  return data as IExtratoUser
 }
 
 export async function requestGetAllRelation() {
