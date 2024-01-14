@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import Modal from 'react-modal'
-import { cor } from '../../styles/color'
 
 export const Container = styled(Modal)`
   display: flex;
@@ -18,8 +17,10 @@ export const Container = styled(Modal)`
     align-items: center;
 
     background-color: #4c4c4c79;
+    border-radius: 10px;
+
     backdrop-filter: blur(6px);
-    padding: 10px;
+    padding: 15px;
 
     .content {
       margin: 2rem auto;

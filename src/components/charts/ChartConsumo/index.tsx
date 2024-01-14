@@ -1,10 +1,12 @@
+/* eslint-disable camelcase */
 import { format, getMonth } from 'date-fns'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import React, { useRef } from 'react'
-import { useExtratoUser } from '../../../hooks/querys'
+import { useExtratoPeddingUser, useExtratoUser } from '../../../hooks/querys'
 import { cor } from '../../../styles/color'
 import { Loading } from '../../Loading'
+import { months } from '../utils/months'
 
 interface I {
   id: string
@@ -17,13 +19,16 @@ interface IResult {
 
 export function ChartConsumo({ id }: I) {
   const { getEtrato, isLoading } = useExtratoUser(id)
+  const { getEtratoPedding, isLoadingPedding } = useExtratoPeddingUser(id)
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
 
   const chart = React.useMemo(() => {
-    const relations = getEtrato?.allRelation ?? []
+    const relations_valid = getEtrato?.allRelation ?? []
+    const relations_pedding = getEtratoPedding?.allRelation ?? []
+
     const currentDate = format(new Date(), 'MM/yy')
 
-    const releationByDate = relations.filter((h) => {
+    const releationByDate = relations_valid.filter((h) => {
       const date = format(new Date(h.updated_at), 'MM/yy')
       if (date === currentDate) {
         return h
@@ -31,12 +36,30 @@ export function ChartConsumo({ id }: I) {
       return null
     })
 
+    const releationByDatePedding = relations_pedding.filter((h) => {
+      const date = format(new Date(h.updated_at), 'MM/yy')
+      if (date === currentDate) {
+        return h
+      }
+      return null
+    })
+    console.log({
+      peding: releationByDatePedding.length,
+      valid: releationByDate.length,
+    })
+
     const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
-    const result: IResult[] = []
+    const result_valid: IResult[] = []
+    const result_pedding: IResult[] = []
 
     month.forEach((m) => {
-      let data = {
+      let dataV = {
+        mes: m,
+        qnt: 0,
+      }
+
+      let dataP = {
         mes: m,
         qnt: 0,
       }
@@ -44,17 +67,28 @@ export function ChartConsumo({ id }: I) {
       releationByDate.forEach((h) => {
         const mes = getMonth(new Date(h.updated_at)) + 1
         if (m === mes) {
-          data = {
+          dataV = {
             mes: m,
-            qnt: data.qnt + 1,
+            qnt: dataV.qnt + 1,
           }
         }
       })
-      result.push(data)
+
+      releationByDatePedding.forEach((h) => {
+        const mes = getMonth(new Date(h.updated_at)) + 1
+        if (m === mes) {
+          dataP = {
+            mes: m,
+            qnt: dataP.qnt + 1,
+          }
+        }
+      })
+      result_pedding.push(dataP)
+      result_valid.push(dataV)
     })
 
-    return result
-  }, [getEtrato])
+    return { result_pedding, result_valid }
+  }, [getEtrato, getEtratoPedding])
 
   const options: Highcharts.Options = {
     chart: {
@@ -66,33 +100,57 @@ export function ChartConsumo({ id }: I) {
       plotShadow: true,
       plotBorderWidth: 1,
       plotBorderColor: '#5e5e5e',
+      style: {
+        color: cor.focus.a,
+      },
     },
 
     title: {
-      text: 'CONSUMO (vendas)',
+      text: 'Negócios',
+      style: {
+        color: cor.bg.light,
+      },
     },
+
+    yAxis: {
+      labels: {
+        style: {
+          color: '#fff',
+        },
+      },
+      title: {
+        text: '',
+        style: {
+          color: '#fff',
+        },
+      },
+    },
+
     xAxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      labels: {
+        style: {
+          color: cor.focus.a,
+        },
+      },
+
+      categories: months,
+
       crosshair: true,
     },
+
     series: [
       {
         type: 'column',
-        name: 'Qunatidade de b2b realizado durante o mês',
-        data: chart.map((h) => h.qnt),
+        name: 'Negócios validados no mes',
+        data: chart.result_valid.map((h) => h.qnt),
+        color: cor.focus.a,
+      },
+
+      {
+        type: 'column',
+        name: 'Negócios pendente no mes',
+        data: chart.result_pedding.map((h) => h.qnt),
+        color: '#4f1a1a',
       },
     ],
   }

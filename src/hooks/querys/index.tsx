@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 
 import { IExtratoUser, IRelation } from '../../dtos'
 import {
+  requestExtratoPeddingUser,
   requestExtratoUser,
   requestGetAllRelation,
   requestGetAllUsers,
@@ -25,8 +26,20 @@ export function useExtratoUser(userId: string) {
   }
 }
 
+export function useExtratoPeddingUser(userId: string) {
+  const get = useQuery('get-metric-pedding-user', () =>
+    requestExtratoPeddingUser(userId),
+  )
+
+  return {
+    getEtratoPedding: get.data as IExtratoUser,
+    isLoadingPedding: get.isLoading,
+    fetchAllUser: get.refetch,
+  }
+}
+
 export function useRelation() {
-  const get = useQuery('get-all-users', requestGetAllRelation)
+  const get = useQuery('get-all-relation-users', requestGetAllRelation)
   const metric = useQuery('get-metric', requestGetMetrics)
 
   return {

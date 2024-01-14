@@ -70,11 +70,11 @@ export function Table({ userSelectd, getAllUsers }: I) {
         <S.TableBody>
           <S.TableTop>
             <S.TableCell>
-              <h3>Nome</h3>
+              <h3>Membro</h3>
             </S.TableCell>
 
             <S.TableCell>
-              <h3>Membro</h3>
+              <h3>Empresa</h3>
             </S.TableCell>
 
             <S.TableCell>
@@ -88,8 +88,8 @@ export function Table({ userSelectd, getAllUsers }: I) {
 
           {userList.map((h) => (
             <S.TableRow onClick={() => handleSelectUser(h)} style={{ color: cor.bg.light }} key={h?.id}>
-              <S.TableCell>{h?.nome}</S.TableCell>
               <S.TableCell>{h?.membro}</S.TableCell>
+              <S.TableCell>{h?.profile?.workName}</S.TableCell>
               <S.TableCell>{h?.profile?.email}</S.TableCell>
               <S.TableCell>
                 {format(new Date(h?.created_at), 'dd/MM/yy')}

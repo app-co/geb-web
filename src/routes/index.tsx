@@ -10,8 +10,6 @@ import { Rank } from '../pages/Rank'
 export function Router() {
   const { user } = useAuth()
 
-  console.log({ user })
-
   function PrivateRoue({ path, element }: any) {
     return user ? element : <Navigate to="/" replace />
   }
@@ -22,7 +20,7 @@ export function Router() {
       <Route path="/home" element={<PrivateRoue element={<Home />} />} />
       <Route path="/membros" element={<PrivateRoue element={<Membros />} />} />
       <Route
-        path="/new-membro"
+        path="/user-signup"
         element={<PrivateRoue element={<NewMembro />} />}
       />
       <Route path="/rank" element={<PrivateRoue element={<Rank />} />} />

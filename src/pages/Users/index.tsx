@@ -1,13 +1,13 @@
+import { FormHandles } from '@unform/core'
+import { Form } from '@unform/web'
 import React, { useRef } from 'react'
+import { useQuery } from 'react-query'
+import { Input } from '../../components/Input'
 import { Menu } from '../../components/Menu'
 import { UserComp } from '../../components/UserComp'
-import * as S from './styles'
-import { Input } from '../../components/Input'
-import { Form } from '@unform/web'
-import { api } from '../../services'
 import { IStars, IUserDtos } from '../../dtos'
-import { useQuery } from 'react-query'
-import { FormHandles } from '@unform/core'
+import { api } from '../../services'
+import * as S from './styles'
 
 type State = {
   user: IUserDtos
@@ -71,8 +71,6 @@ export function Users() {
 
   const handleCreateInvit = React.useCallback(
     async (data: PropsGuest) => {
-      console.log(modalInvit.id, data.name_convidado)
-
       await api
         .post('guest/create-guest', {
           fk_user_id: modalInvit.id,
@@ -108,8 +106,6 @@ export function Users() {
         .then(() => {
           refetch()
         })
-
-      console.log(id, inativo)
     },
     [refetch],
   )
@@ -117,9 +113,9 @@ export function Users() {
   const users =
     search.length > 0
       ? data?.filter((h: IUserDtos) => {
-          const up = h.nome.toLocaleUpperCase()
-          return up.includes(search.toLocaleUpperCase())
-        })
+        const up = h.nome.toLocaleUpperCase()
+        return up.includes(search.toLocaleUpperCase())
+      })
       : data
 
   const list = React.useMemo(() => {
@@ -166,7 +162,7 @@ export function Users() {
       <Menu />
 
       <S.content>
-        <Form onSubmit={() => {}}>
+        <Form onSubmit={() => { }}>
           <Input
             name="search"
             onChange={(h) => setSearch(h.currentTarget.value)}

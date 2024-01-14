@@ -6,7 +6,7 @@ interface I {
 }
 
 export const Container = styled.div`
-  flex: 1;
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
   background-color: ${cor.bg.dark};

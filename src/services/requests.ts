@@ -35,6 +35,12 @@ export async function requestExtratoUser(id: string) {
   return data as IExtratoUser
 }
 
+export async function requestExtratoPeddingUser(id: string) {
+  const { data } = await api.get(`/relation/extrato-pedding/${id}`)
+
+  return data as IExtratoUser
+}
+
 export async function requestGetAllRelation() {
   const { data } = await api.get('/relation')
 

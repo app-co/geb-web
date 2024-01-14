@@ -7,9 +7,9 @@ interface I {
 export const Container = styled.div<I>`
   display: flex;
   align-items: center;
-  width: 7rem;
+  max-width: 5rem;
   justify-content: space-between;
-  color: ${cor.orange[1]};
+  color: ${cor.bg.dark};
 
   & + div {
     margin-top: 0.8rem;
@@ -21,19 +21,19 @@ export const Container = styled.div<I>`
   }
 
   .circle {
-    background-color: #fff;
+    border: 2px solid ${cor.bg.dark};
     display: flex;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1rem;
+    height: 1rem;
     border-radius: 2rem;
     align-items: center;
     justify-content: center;
 
     .dot {
-      background-color: ${(h) => (h.selected ? cor.dark[3] : '#fff')};
+      background-color: ${(h) => (h.selected ? cor.bg.dark : '#ffffff00')};
       display: flex;
-      width: 1rem;
-      height: 1rem;
+      width: 0.5rem;
+      height: 0.5rem;
 
       border-radius: 2rem;
     }

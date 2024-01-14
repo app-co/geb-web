@@ -1,18 +1,20 @@
+import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
-import { Menu } from '../../components/Menu'
-import * as S from './styles'
-import { Input } from '../../components/Input'
-import { Button } from '../../components/Button'
 import React, { useRef } from 'react'
+import { Button } from '../../components/Button'
+import { Input } from '../../components/Input'
+import { Layout } from '../../components/Layout'
 import { Select } from '../../components/Select'
 import { api } from '../../services'
 import { userRoutes } from '../../services/routes'
-import { FormHandles } from '@unform/core'
+import * as S from './styles'
 
 export function NewMembro() {
   const ref = useRef<FormHandles>(null)
   const [selectType, setSelectType] = React.useState('membro')
+  const [hub, setHub] = React.useState<string>('GEB')
   const [load, setLoad] = React.useState(false)
+
   const submit = React.useCallback(
     async (data: any) => {
       setLoad(true)
@@ -26,6 +28,7 @@ export function NewMembro() {
           inativo: false,
           apadrinhado: false,
           qntPadrinho: 0,
+          hub,
         }
 
         await api.post(userRoutes.post.create, dt).then(() => {
@@ -38,12 +41,11 @@ export function NewMembro() {
         setLoad(false)
       }
     },
-    [selectType],
+    [hub, selectType],
   )
 
   return (
-    <>
-      <Menu />
+    <Layout>
       <S.Container>
         <Form ref={ref} onSubmit={submit}>
           <div className="content">
@@ -61,6 +63,13 @@ export function NewMembro() {
               selected={selectType === 'adm'}
               title="ADMIN"
             />
+
+            <S.main>
+              <select onChange={(e) => setHub(e.currentTarget.value)}>
+                <option value="GEB">GEB</option>
+                <option value="CLUB_MENTORIA">CLUB DA MENTORIA</option>
+              </select>
+            </S.main>
           </div>
         </Form>
         <Button
@@ -72,6 +81,6 @@ export function NewMembro() {
           load={load}
         />
       </S.Container>
-    </>
+    </Layout>
   )
 }

@@ -8,6 +8,7 @@ import { api } from '../../../services'
 import { consumoRoutes } from '../../../services/routes'
 import { cor } from '../../../styles/color'
 import { Loading } from '../../Loading'
+import { months } from '../utils/months'
 
 interface I {
   id: string
@@ -19,7 +20,7 @@ interface IResult {
 }
 
 export function ChartMetricConsumo() {
-  const { getAllRelation } = useRelation()
+  const { getAllRelation, loadingMetric } = useRelation()
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
   const { data, isLoading } = useQuery('all-consumo', async () => {
     const rs = await api.get(consumoRoutes.get['all-consumo'])
@@ -72,41 +73,50 @@ export function ChartMetricConsumo() {
       plotBorderWidth: 1,
       plotBorderColor: '#5e5e5e',
     },
+
     title: {
+      text: 'Negócios',
       style: {
-        color: '#cccccc',
+        color: cor.bg.light,
       },
-      text: 'CONSUMO (vendas)',
-    },
-    xAxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-      crosshair: true,
     },
 
+    yAxis: {
+      labels: {
+        style: {
+          color: '#fff',
+        },
+      },
+      title: {
+        text: '',
+        style: {
+          color: '#fff',
+        },
+      },
+    },
+
+    xAxis: {
+      labels: {
+        style: {
+          color: cor.focus.a,
+        },
+      },
+
+      categories: months,
+
+      crosshair: true,
+    },
     series: [
       {
         type: 'column',
         color: cor.focus.a,
-        name: 'Qunatidade de consumo realizado no mês',
+        name: 'Qunatidade de negócios realizado no mês',
         data: chart.map((h) => h.qnt),
       },
     ],
   }
 
-  if (isLoading) {
+  if (loadingMetric) {
     return (
       <div
         style={{

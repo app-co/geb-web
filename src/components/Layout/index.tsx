@@ -1,4 +1,4 @@
-import { ChartLineUp } from '@phosphor-icons/react'
+import { ChartLineUp, UserPlus, Users } from '@phosphor-icons/react'
 import React, { RefObject, useRef } from 'react'
 import { Menu } from '../Menu'
 import * as S from './styles'
@@ -16,17 +16,12 @@ const menu = [
   {
     path: '/membros',
     name: 'Usuários',
-    icon: <ChartLineUp weight="duotone" />,
+    icon: <Users weight="duotone" />,
   },
   {
-    path: '/cafe',
-    name: 'CAfe',
-    icon: <ChartLineUp weight="duotone" />,
-  },
-  {
-    path: '/bana',
-    name: 'Banana',
-    icon: <ChartLineUp weight="duotone" />,
+    path: '/user-signup',
+    name: 'Cadastrar novo membro',
+    icon: <UserPlus weight="duotone" />,
   },
 ]
 

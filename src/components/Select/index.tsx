@@ -8,7 +8,7 @@ interface I {
 export function Select({ select, selected = false, title }: I) {
   return (
     <S.Container onClick={select} selected={selected}>
-      <h4>{title}</h4>
+      <p>{title}</p>
 
       <div className="circle">
         <div className="dot" />

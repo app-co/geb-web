@@ -6,6 +6,7 @@ import { BalanceCard } from '../../components/BalanceCard'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { Layout } from '../../components/Layout'
+import { Modal } from '../../components/Modal'
 import { Table } from '../../components/Table'
 import { ChartConsumo } from '../../components/charts/ChartConsumo'
 import { useToast } from '../../context/ToastContext'
@@ -19,12 +20,14 @@ type TOption = 'metric' | 'config'
 
 export function Membros() {
   const { user } = useAuth()
+
   const { getAllUser } = useUser(user.hub)
   const { addToast } = useToast()
 
   const [setUser, setUserSl] = React.useState<IUserDtos>()
   const [goback, setGoback] = React.useState<boolean>(true)
   const [option, setOption] = React.useState<TOption>('metric')
+  const [modalDelete, setModalDelete] = React.useState<boolean>(false)
 
   const metrics = React.useMemo(() => {
     const totalPresenca =
@@ -73,11 +76,13 @@ export function Membros() {
       .delete(`/user/delete/${setUser?.membro}`)
       .then(() => {
         alert('Membro deletado')
+        setGoback(!goback)
+        setModalDelete(false)
       })
       .catch((h) => {
-        console.log(h)
+        console.log(h.response.data)
       })
-  }, [setUser?.membro])
+  }, [goback, setUser?.membro])
 
   const handleInativateMembro = React.useCallback(async () => {
     await api.put('/situation/update-situation', {
@@ -94,6 +99,13 @@ export function Membros() {
 
   return (
     <div>
+      <Modal
+        submit={handleDeleteUser}
+        cancel={() => setModalDelete(false)}
+        isOpen={modalDelete}
+        title="Você tem certeza que deseja deletar este usuário?"
+      />
+
       <Layout>
         <div>
           {setUser && goback ? (
@@ -181,7 +193,11 @@ export function Membros() {
                     <h3>Deletar usuário?</h3>
                   </div>
 
-                  <Button bg="delet" title="DELETAR" />
+                  <Button
+                    onClick={() => setModalDelete(true)}
+                    bg="delet"
+                    title="DELETAR"
+                  />
                 </S.form>
               )}
             </S.Container>

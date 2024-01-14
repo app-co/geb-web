@@ -1,9 +1,11 @@
 import styled from 'styled-components'
+import { cor } from '../../styles/color'
 
 export const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  background-color: ${cor.bg.dark};
 
   align-items: center;
   justify-content: center;
@@ -13,10 +15,10 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
 
-    background-color: #0d156a58;
+    background-color: ${cor.bg.light};
     padding: 3rem;
     border-radius: 8px;
-    box-shadow: 5px 5px 10px #ffffff73;
+    box-shadow: 4px 3px 3px #ebe8859b;
 
     .chek {
       display: flex;
@@ -33,6 +35,13 @@ export const Container = styled.div`
   }
 
   .button {
+    margin-top: 2rem;
+  }
+`
+
+export const main = styled.div`
+  select {
+    padding: 5px;
     margin-top: 2rem;
   }
 `

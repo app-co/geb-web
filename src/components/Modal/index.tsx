@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
-import * as S from './styles'
 import { Button } from '../Button'
+import * as S from './styles'
 interface I {
   title: string
-  children: ReactNode
+  children?: ReactNode
   isOpen: boolean
   load?: boolean
   cancel: () => void
