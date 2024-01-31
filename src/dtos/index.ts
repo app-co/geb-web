@@ -224,6 +224,7 @@ export interface IMetric {
   metricValidByMonth: number
   padding_media_transaction: number
   valid_media_transaction: number
+  amount_accumulated: number
 }
 
 export interface IExtratoUser {
