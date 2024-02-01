@@ -19,13 +19,14 @@ export function Home() {
     const month = getMetric?.metricValidByMonth || 0
     const valid = getMetric?.valid_media_transaction || 0
     const year = getMetric?.metricValidByYear || 0
+    const accumulated = getMetric?.amount_accumulated || 0
     return {
       userUp: String(getMetric?.usersUp),
       media_pedding: convertNumberToMoney(pedding / 100),
       media_valid: convertNumberToMoney(valid / 100 ?? 0),
       month: convertNumberToMoney(month / 100 || 0),
       year: convertNumberToMoney(year / 100 ?? 0),
-      accumulated: getMetric?.amount_accumulated ?? 0,
+      accumulated: convertNumberToMoney(accumulated / 100) ?? 0,
     }
   }, [getMetric])
 
@@ -40,9 +41,6 @@ export function Home() {
   return (
     <S.Container>
       <Layout>
-        <div style={{ padding: 10, color: '#fff' }}>
-          <h2>Acumulado: {convertNumberToMoney(metricas.accumulated / 100)}</h2>
-        </div>
         <S.main>
           <S.gridCardBalanc>
             <BalanceCard valu={metricas?.userUp} title="MEMBROS ATIVOS">
@@ -53,7 +51,7 @@ export function Home() {
               <HandCoins weight="duotone" />
             </BalanceCard>
 
-            <BalanceCard valu={metricas?.year} title="ACUMULADO NO ANO">
+            <BalanceCard valu={metricas.accumulated} title="ACUMULADO NO ANO">
               <PiggyBank weight="duotone" />
             </BalanceCard>
 
