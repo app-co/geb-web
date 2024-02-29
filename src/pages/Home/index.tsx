@@ -14,12 +14,14 @@ import * as S from './styles'
 export function Home() {
   const { getMetric, loadingMetric } = useRelation()
 
+  const amount = 115788485
+
   const metricas = React.useMemo(() => {
     const pedding = getMetric?.padding_media_transaction || 0
     const month = getMetric?.metricValidByMonth || 0
     const valid = getMetric?.valid_media_transaction || 0
     const year = getMetric?.metricValidByYear || 0
-    const accumulated = getMetric?.amount_accumulated || 0
+    const accumulated = getMetric?.amount_accumulated + amount || 0
     return {
       userUp: String(getMetric?.usersUp),
       media_pedding: convertNumberToMoney(pedding / 100),
