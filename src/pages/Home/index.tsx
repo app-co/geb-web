@@ -7,12 +7,13 @@ import { BalanceCard } from '../../components/BalanceCard'
 import { Layout } from '../../components/Layout'
 import { Loading } from '../../components/Loading'
 import { ChartMetricConsumo } from '../../components/charts/MetricConsumo'
-import { useRelation } from '../../hooks/querys'
+import { useGlobalMetric, useRelation } from '../../hooks/querys'
 import { convertNumberToMoney } from '../../utils/unitts'
 import * as S from './styles'
 
 export function Home() {
   const { getMetric, loadingMetric } = useRelation()
+  const { getGlobalMetrinc } = useGlobalMetric()
 
   const amount = 115788485
 
@@ -53,7 +54,7 @@ export function Home() {
               <HandCoins weight="duotone" />
             </BalanceCard>
 
-            <BalanceCard valu={metricas.accumulated} title="ACUMULADO NO ANO">
+            <BalanceCard valu={getGlobalMetrinc?.consumoTotal ?? ''} title="ACUMULADO NO ANO">
               <PiggyBank weight="duotone" />
             </BalanceCard>
 

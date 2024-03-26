@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 
 import { IExtratoUser, IRelation } from '../../dtos'
 import {
+  fetchGlobalMetric,
   requestExtratoPeddingUser,
   requestExtratoUser,
   requestGetAllRelation,
@@ -23,6 +24,15 @@ export function useExtratoUser(userId: string) {
     getEtrato: get.data as IExtratoUser,
     isLoading: get.isLoading,
     fetchAllUser: get.refetch,
+  }
+}
+
+export function useGlobalMetric() {
+  const get = useQuery('get:global-metric', fetchGlobalMetric)
+
+  return {
+    getGlobalMetrinc: get.data,
+    isLoadingGlobalMetric: get.isLoading
   }
 }
 

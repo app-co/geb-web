@@ -1,6 +1,10 @@
 import { api } from '.'
 import { IExtratoUser, IMetric, IRelation, IStars, IUserDtos } from '../dtos'
 
+interface IGlobalMetric {
+  consumoTotal: string
+}
+
 export async function requestGetAllUsers(hub: string) {
   const { data } = await api.get(`/user/list-all-user/${hub}`)
 
@@ -51,4 +55,10 @@ export async function requestGetMetrics() {
   const { data } = await api.get('/relation/metric')
 
   return data as IMetric
+}
+
+export async function fetchGlobalMetric() {
+  const { data } = await api.get('/metric')
+
+  return data as IGlobalMetric
 }
