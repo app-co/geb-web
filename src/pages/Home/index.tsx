@@ -22,7 +22,7 @@ export function Home() {
     const month = getMetric?.metricValidByMonth || 0
     const valid = getMetric?.valid_media_transaction || 0
     const year = getMetric?.metricValidByYear || 0
-    const accumulated = getMetric?.amount_accumulated + amount || 0
+    const accumulated = getMetric?.amount_accumulated! + amount || 0
     return {
       userUp: String(getMetric?.usersUp),
       media_pedding: convertNumberToMoney(pedding / 100),
@@ -54,7 +54,10 @@ export function Home() {
               <HandCoins weight="duotone" />
             </BalanceCard>
 
-            <BalanceCard valu={getGlobalMetrinc?.consumoTotal ?? ''} title="ACUMULADO NO ANO">
+            <BalanceCard
+              valu={getGlobalMetrinc?.consumoTotal ?? ''}
+              title="ACUMULADO NO ANO"
+            >
               <PiggyBank weight="duotone" />
             </BalanceCard>
 
