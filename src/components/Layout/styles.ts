@@ -12,9 +12,10 @@ export const grid = styled.main`
   grid-template-columns: 15vw 1fr;
 `
 export const sideMenu = styled.div`
-  background-color: ${cor.bg.light};
+  background-color: ${cor.dark[1]};
   min-height: 100vh;
   padding: 40px 17px 17px 17px;
+  border-right: 1px solid #777777;
 `
 
 export const content = styled.div`

@@ -9,7 +9,9 @@ interface IGlobalMetric {
     membro: string
     created: string
     presenca: string
-  }
+    workname: string
+    relations: IRelation[]
+  }[]
 }
 
 export async function requestGetAllUsers(hub: string) {

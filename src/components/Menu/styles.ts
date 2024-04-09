@@ -4,7 +4,7 @@ import { cor } from '../../styles/color'
 import { Link } from 'react-router-dom'
 
 export const Container = styled.div`
-  background-color: ${cor.bg.light};
+  background-color: ${cor.bg.dark};
 
   display: flex;
   padding: 10px 2rem;
@@ -16,7 +16,6 @@ export const Container = styled.div`
     width: 6rem;
     height: 4rem;
   }
-
 `
 
 export const content = styled.div`

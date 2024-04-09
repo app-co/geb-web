@@ -44,15 +44,41 @@ export const textMenu = styled.h4<I>`
 `
 
 export const main = styled.div`
-  background-color: #303030;
+  background-color: ${cor.dark[1]};
   padding: 15px;
   border-radius: 10px;
 `
 
 export const form = styled.div`
-  background-color: ${cor.bg.light};
   padding: 10px;
   border-radius: 10px;
+`
+
+export const grid = styled.div`
+  background-color: ${cor.dark[2]};
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  .add {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .button-add {
+      background-color: ${cor.focus.a};
+      width: fit-content;
+      padding: 5px;
+      transition: 0.5s;
+
+      :hover {
+        cursor: pointer;
+        background-color: ${cor.dark[1]};
+        padding: 6px;
+        border-radius: 8px;
+      }
+    }
+  }
 `
 
 export const gridCardBalanc = styled.div`

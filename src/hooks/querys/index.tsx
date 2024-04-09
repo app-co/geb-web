@@ -32,7 +32,8 @@ export function useGlobalMetric() {
 
   return {
     getGlobalMetrinc: get.data,
-    isLoadingGlobalMetric: get.isLoading
+    isLoadingGlobalMetric: get.isLoading,
+    refetch: get.refetch,
   }
 }
 

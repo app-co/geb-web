@@ -1,15 +1,24 @@
 /* eslint-disable prettier/prettier */
 import { Form } from '@unform/web'
-import { format } from 'date-fns'
 import React, { useState } from 'react'
-import { IUserDtos } from '../../dtos'
+import { IRelation, IUserDtos } from '../../dtos'
 import { cor } from '../../styles/color'
 import { Input } from '../Input'
 import * as S from './styles'
 
+type TGetUser = {
+  id: string
+  nome: string
+  membro: string
+  created: string
+  presenca: string
+  workname: string
+  relations: IRelation[]
+}
+
 interface I {
-  userSelectd: (user: IUserDtos) => void
-  getAllUsers: IUserDtos[]
+  userSelectd: (user: TGetUser) => void
+  getAllUsers: TGetUser[]
 }
 
 export function Table({ userSelectd, getAllUsers }: I) {
@@ -70,29 +79,34 @@ export function Table({ userSelectd, getAllUsers }: I) {
         <S.TableBody>
           <S.TableTop>
             <S.TableCell>
-              <h3>Membro</h3>
+              <h4>Nome</h4>
             </S.TableCell>
 
             <S.TableCell>
-              <h3>Empresa</h3>
+              <h4>Membro</h4>
             </S.TableCell>
 
             <S.TableCell>
-              <h3>E-mail</h3>
+              <h4>Empresa</h4>
             </S.TableCell>
 
             <S.TableCell>
-              <h3>Dt. cadastro</h3>
+              <h4>Presença</h4>
+            </S.TableCell>
+
+            <S.TableCell>
+              <h4>Dt. cadastro</h4>
             </S.TableCell>
           </S.TableTop>
 
           {userList.map((h) => (
             <S.TableRow onClick={() => handleSelectUser(h)} style={{ color: cor.bg.light }} key={h?.id}>
+              <S.TableCell>{h?.nome}</S.TableCell>
+              <S.TableCell>{h?.workname}</S.TableCell>
               <S.TableCell>{h?.membro}</S.TableCell>
-              <S.TableCell>{h?.profile?.workName}</S.TableCell>
-              <S.TableCell>{h?.profile?.email}</S.TableCell>
+              <S.TableCell>{h?.presenca}</S.TableCell>
               <S.TableCell>
-                {format(new Date(h?.created_at), 'dd/MM/yy')}
+                {h.created}
               </S.TableCell>
             </S.TableRow>
           ))}
