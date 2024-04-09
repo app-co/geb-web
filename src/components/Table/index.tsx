@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Form } from '@unform/web'
 import React, { useState } from 'react'
-import { IRelation, IUserDtos } from '../../dtos'
+import { IRelation } from '../../dtos'
 import { cor } from '../../styles/color'
 import { Input } from '../Input'
 import * as S from './styles'
@@ -58,7 +58,7 @@ export function Table({ userSelectd, getAllUsers }: I) {
     setCurrentPage(1)
   }
 
-  const handleSelectUser = React.useCallback(async (user: IUserDtos) => {
+  const handleSelectUser = React.useCallback(async (user: TGetUser) => {
     userSelectd(user)
   }, [userSelectd])
 
