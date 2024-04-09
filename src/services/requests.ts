@@ -3,6 +3,13 @@ import { IExtratoUser, IMetric, IRelation, IStars, IUserDtos } from '../dtos'
 
 interface IGlobalMetric {
   consumoTotal: string
+  getUsers: {
+    id: string
+    nome: string
+    membro: string
+    created: string
+    presenca: string
+  }
 }
 
 export async function requestGetAllUsers(hub: string) {
