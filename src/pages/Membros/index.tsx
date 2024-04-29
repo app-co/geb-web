@@ -95,7 +95,7 @@ export function Membros() {
   const handleAddPress = React.useCallback(async () => {
     setLoadPres(true)
     await api.post('/pres', {
-      names: [setUser?.membro],
+      userId: setUser?.id
     })
 
     const getUser = await fetchGlobalMetric()
