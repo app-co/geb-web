@@ -14,6 +14,12 @@ type TGetUser = {
   presenca: string
   workname: string
   relations: IRelation[]
+  situation: {
+    apadrinhado: boolean
+    firstLogin: boolean
+    inativo: boolean
+    logado: boolean
+  }
 }
 
 interface I {

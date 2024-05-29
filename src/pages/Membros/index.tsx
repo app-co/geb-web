@@ -264,7 +264,7 @@ export function Membros() {
           ) : (
             <div>
               <Table
-                getAllUsers={getGlobalMetrinc.getUsers!}
+                getAllUsers={getGlobalMetrinc!.getUsers!}
                 userSelectd={(h) => {
                   setUserSl(h)
                   setGoback(!goback)
