@@ -11,6 +11,12 @@ interface IGlobalMetric {
     presenca: string
     workname: string
     relations: IRelation[]
+    situation: {
+      apadrinhado: boolean
+      firstLogin: boolean
+      inativo: boolean
+      logado: boolean
+    }
   }[]
 }
 

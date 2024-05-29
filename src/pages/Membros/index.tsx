@@ -26,6 +26,12 @@ interface IUserSlected {
   presenca: string
   workname: string
   relations: IRelation[]
+  situation: {
+    apadrinhado: boolean
+    firstLogin: boolean
+    inativo: boolean
+    logado: boolean
+  }
 }
 
 export function Membros() {
@@ -95,30 +101,35 @@ export function Membros() {
   const handleAddPress = React.useCallback(async () => {
     setLoadPres(true)
     await api.post('/pres', {
-      userId: setUser?.id
+      userId: setUser?.id,
     })
 
     const getUser = await fetchGlobalMetric()
     const user = getUser.getUsers.find((h) => h.id === setUser!.id)
 
     await refetch()
-    console.log(user?.presenca)
     setUserSl(user)
     setLoadPres(false)
   }, [refetch, setUser])
 
-  // const handleInativateMembro = React.useCallback(async () => {
-  //   await api.put('/situation/update-situation', {
-  //     fk_id_user: setUser?.id,
-  //     inativo: !setUser?.situation.inativo,
-  //   })
+  const handleInativateMembro = React.useCallback(async () => {
+    const { inativo } = setUser!.situation
+    setLoadPres(true)
+    await api.put('/situation/update-situation', {
+      fk_id_user: setUser?.id,
+      inativo: !inativo,
+    })
 
-  //   addToast({
-  //     title: 'SUCESSO',
-  //     type: 'success',
-  //     description: 'As alterações foi realizado com sucesso!',
-  //   })
-  // }, [addToast, setUser?.id, setUser?.situation.inativo])
+    await refetch()
+
+    addToast({
+      title: 'SUCESSO',
+      type: 'success',
+      description: 'As alterações foi realizado com sucesso!',
+    })
+    setGoback(!goback)
+    setLoadPres(false)
+  }, [addToast, goback, refetch, setUser])
 
   return (
     <div>
@@ -204,9 +215,18 @@ export function Membros() {
                       }}
                     >
                       <FaUserAltSlash />
-                      <h3 style={{}}>Banir usuário?</h3>
+                      <h3 style={{}}>
+                        {setUser.situation.inativo
+                          ? 'Restaurar Usuário'
+                          : 'Banir usuário?'}
+                      </h3>
                     </div>
-                    <Button bg="delet" title="BANIR" />
+                    <Button
+                      onClick={handleInativateMembro}
+                      bg="delet"
+                      title={setUser.situation.inativo ? 'RESTAURAR' : 'BANIR'}
+                      load={loadPres}
+                    />
 
                     <div
                       style={{
@@ -244,7 +264,7 @@ export function Membros() {
           ) : (
             <div>
               <Table
-                getAllUsers={getGlobalMetrinc?.getUsers!}
+                getAllUsers={getGlobalMetrinc.getUsers!}
                 userSelectd={(h) => {
                   setUserSl(h)
                   setGoback(!goback)

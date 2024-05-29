@@ -101,7 +101,7 @@ export function Table({ userSelectd, getAllUsers }: I) {
 
           {userList.map((h) => (
             <S.TableRow onClick={() => handleSelectUser(h)} style={{ color: cor.bg.light }} key={h?.id}>
-              <S.TableCell>{h?.nome}</S.TableCell>
+              <S.TableCell style={{ textDecorationLine: h.situation.inativo ? 'line-through' : 'none' }} >{h?.nome}</S.TableCell>
               <S.TableCell>{h?.workname}</S.TableCell>
               <S.TableCell>{h?.membro}</S.TableCell>
               <S.TableCell>{h?.presenca}</S.TableCell>
