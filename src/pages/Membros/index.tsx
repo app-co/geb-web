@@ -43,6 +43,7 @@ export function Membros() {
   const [option, setOption] = React.useState<TOption>('metric')
   const [modalDelete, setModalDelete] = React.useState<boolean>(false)
   const [loadPres, setLoadPres] = React.useState<boolean>(false)
+  const [hub, setHub] = React.useState('GEB')
 
   const metrics = React.useMemo(() => {
     const totalPresenca =
@@ -64,6 +65,7 @@ export function Membros() {
           membro,
           senha: senha ?? null,
           id: setUser?.id,
+          hub
         }
 
         await api.patch('/user/update-membro', dados)
@@ -201,6 +203,23 @@ export function Membros() {
                         name="membro"
                       />
                       <Input label="Senha" placeholder="Senha" name="senha" />
+
+                      <div style={{ marginBlock: 20, gap: 8, display: 'flex', flexDirection: 'column' }} >
+                        <h3>Alterar HUB</h3>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} >
+                          <input value={'GEB'} checked={hub === 'GEB'} onChange={h => setHub(h.currentTarget.value)} style={{
+                            width: 30, height: 30,
+                          }} type="checkbox" />
+                          <h3>G.E.B</h3>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} >
+                          <input value={'CLUB_MENTORIA'} checked={hub === 'CLUB_MENTORIA'} onChange={h => setHub(h.currentTarget.value)} style={{
+                            width: 30, height: 30,
+                          }} type="checkbox" />
+                          <h3>Club da mentaria</h3>
+                        </div>
+                      </div>
 
                       <Button type="submit" title="SALVAR" />
                     </Form>
