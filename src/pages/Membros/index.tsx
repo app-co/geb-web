@@ -11,10 +11,12 @@ import { Table } from '../../components/Table'
 import { ChartConsumo } from '../../components/charts/ChartConsumo'
 import { useToast } from '../../context/ToastContext'
 import { IRelation, IUserDtos } from '../../dtos'
-import { useGlobalMetric } from '../../hooks/querys'
 import { api } from '../../services'
 import { fetchGlobalMetric } from '../../services/requests'
 import * as S from './styles'
+import { make } from '../../hooks'
+import { IUser } from '../../hooks/dto/interfaces'
+import { TUser } from '../../hooks/dto/types'
 
 type TOption = 'metric' | 'config'
 
@@ -34,41 +36,46 @@ interface IUserSlected {
   }
 }
 
+const { mutations } = make()
+
 export function Membros() {
-  const { getGlobalMetrinc, refetch } = useGlobalMetric()
   const { addToast } = useToast()
 
-  const [setUser, setUserSl] = React.useState<IUserSlected>()
+
+
+  const [userSelected, setUserSl] = React.useState<IUser>()
   const [goback, setGoback] = React.useState<boolean>(true)
   const [option, setOption] = React.useState<TOption>('metric')
   const [modalDelete, setModalDelete] = React.useState<boolean>(false)
   const [loadPres, setLoadPres] = React.useState<boolean>(false)
   const [hub, setHub] = React.useState('GEB')
 
+  const { mutateAsync: upUser, isLoading: loadUpUser } = mutations.updateUser()
+
   const metrics = React.useMemo(() => {
-    const totalPresenca =
-      String(setUser?.relations.filter((h) => h.type === 'PRESENCA').length) ??
-      '0'
+
     return {
-      totalBusines: String(setUser?.relations.length),
-      totalPresenca,
+      totalBusines: String(10),
+      totalPresenca: 10,
     }
-  }, [setUser])
+  }, [userSelected])
 
   const handleUpateMembro = React.useCallback(
-    async (data: IUserDtos) => {
-      const { nome, membro, senha } = data
+    async (data: TUser) => {
+      const { nome, apelido, senha } = data
 
       try {
-        const dados = {
+        const dados: TUser = {
           nome,
-          membro,
+          apelido,
           senha: senha ?? null,
-          id: setUser?.id,
-          hub
+          id: userSelected!.id,
+          hub: [0],
+          adm: userSelected!.adm,
+          apadrinhado: userSelected!.apadrinhado
         }
 
-        await api.patch('/user/update-membro', dados)
+        await upUser(dados)
 
         addToast({
           title: 'SUCESSO',
@@ -84,12 +91,12 @@ export function Membros() {
         console.log('erro', err)
       }
     },
-    [addToast, setUser?.id],
+    [addToast, userSelected?.id],
   )
 
   const handleDeleteUser = React.useCallback(async () => {
     await api
-      .delete(`/user/delete/${setUser?.membro}`)
+      .delete(`/user/delete/${userSelected?.membro}`)
       .then(() => {
         alert('Membro deletado')
         setGoback(!goback)
@@ -98,31 +105,29 @@ export function Membros() {
       .catch((h) => {
         console.log(h.response.data)
       })
-  }, [goback, setUser?.membro])
+  }, [goback, userSelected?.membro])
 
   const handleAddPress = React.useCallback(async () => {
     setLoadPres(true)
     await api.post('/pres', {
-      userId: setUser?.id,
+      userId: userSelected?.id,
     })
 
     const getUser = await fetchGlobalMetric()
-    const user = getUser.getUsers.find((h) => h.id === setUser!.id)
+    const user = getUser.getUsers.find((h) => h.id === userSelected!.id)
 
-    await refetch()
     setUserSl(user)
     setLoadPres(false)
-  }, [refetch, setUser])
+  }, [userSelected])
 
   const handleInativateMembro = React.useCallback(async () => {
-    const { inativo } = setUser!.situation
+    const { inativo } = userSelected!.situation
     setLoadPres(true)
     await api.put('/situation/update-situation', {
-      fk_id_user: setUser?.id,
+      fk_id_user: userSelected?.id,
       inativo: !inativo,
     })
 
-    await refetch()
 
     addToast({
       title: 'SUCESSO',
@@ -131,7 +136,7 @@ export function Membros() {
     })
     setGoback(!goback)
     setLoadPres(false)
-  }, [addToast, goback, refetch, setUser])
+  }, [addToast, goback, userSelected])
 
   return (
     <div>
@@ -144,7 +149,7 @@ export function Membros() {
 
       <Layout>
         <div>
-          {setUser && goback ? (
+          {userSelected && goback ? (
             <S.Container>
               <S.heder>
                 <S.textMenu
@@ -175,16 +180,17 @@ export function Membros() {
                     </BalanceCard>
                     <BalanceCard
                       title="TOTAL DE PRESENÇA"
-                      valu={metrics?.totalPresenca}
+                      valu={'10'}
                     >
                       <span>ico</span>
                     </BalanceCard>
                   </S.gridCardBalanc>
                   <div style={{ marginTop: '4rem' }}>
-                    <ChartConsumo id={setUser.id} />
+                    <ChartConsumo id={userSelected?.id} />
                   </div>
                 </S.main>
               )}
+
               {option === 'config' && (
                 <S.grid>
                   <S.form>
@@ -192,20 +198,20 @@ export function Membros() {
                     <Form
                       onSubmit={handleUpateMembro}
                       initialData={{
-                        nome: setUser.nome,
-                        membro: setUser.membro,
+                        nome: userSelected.nome,
+                        apelido: userSelected.apelido,
                       }}
                     >
                       <Input label="Nome" placeholder="Nome" name="nome" />
                       <Input
-                        label="Membro"
-                        placeholder="Membro"
-                        name="membro"
+                        label="Apelido"
+                        placeholder="Apelido"
+                        name="apelido"
                       />
                       <Input label="Senha" placeholder="Senha" name="senha" />
 
                       <div style={{ marginBlock: 20, gap: 8, display: 'flex', flexDirection: 'column' }} >
-                        <h3>Alterar HUB</h3>
+                        <h3>Adicione o membro ao HUB</h3>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} >
                           <input value={'GEB'} checked={hub === 'GEB'} onChange={h => setHub(h.currentTarget.value)} style={{
@@ -235,15 +241,13 @@ export function Membros() {
                     >
                       <FaUserAltSlash />
                       <h3 style={{}}>
-                        {setUser.situation.inativo
-                          ? 'Restaurar Usuário'
-                          : 'Banir usuário?'}
+                        {'Banir usuário?'}
                       </h3>
                     </div>
                     <Button
                       onClick={handleInativateMembro}
                       bg="delet"
-                      title={setUser.situation.inativo ? 'RESTAURAR' : 'BANIR'}
+                      title={'BANIR'}
                       load={loadPres}
                     />
 
@@ -270,7 +274,7 @@ export function Membros() {
                   <div className="add">
                     <h3>Adicione presença </h3>
                     <h4 style={{ color: '#fff', fontWeight: 300 }}>
-                      {setUser.presenca}
+                      {userSelected?.presenca}
                     </h4>
 
                     <div onClick={handleAddPress} className="button-add">
@@ -283,7 +287,6 @@ export function Membros() {
           ) : (
             <div>
               <Table
-                getAllUsers={getGlobalMetrinc!.getUsers!}
                 userSelectd={(h) => {
                   setUserSl(h)
                   setGoback(!goback)

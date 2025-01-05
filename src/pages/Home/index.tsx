@@ -7,33 +7,28 @@ import { BalanceCard } from '../../components/BalanceCard'
 import { Layout } from '../../components/Layout'
 import { Loading } from '../../components/Loading'
 import { ChartMetricConsumo } from '../../components/charts/MetricConsumo'
-import { useGlobalMetric, useRelation } from '../../hooks/querys'
 import { convertNumberToMoney } from '../../utils/unitts'
 import * as S from './styles'
+import { make } from '../../hooks'
+
+const { querys } = make()
 
 export function Home() {
-  const { getMetric, loadingMetric } = useRelation()
-  const { getGlobalMetrinc } = useGlobalMetric()
 
-  const amount = 115788485
+
 
   const metricas = React.useMemo(() => {
-    const pedding = getMetric?.padding_media_transaction || 0
-    const month = getMetric?.metricValidByMonth || 0
-    const valid = getMetric?.valid_media_transaction || 0
-    const year = getMetric?.metricValidByYear || 0
-    const accumulated = getMetric?.amount_accumulated! + amount || 0
     return {
-      userUp: String(getMetric?.usersUp),
-      media_pedding: convertNumberToMoney(pedding / 100),
-      media_valid: convertNumberToMoney(valid / 100 ?? 0),
-      month: convertNumberToMoney(month / 100 || 0),
-      year: convertNumberToMoney(year / 100 ?? 0),
-      accumulated: convertNumberToMoney(accumulated / 100) ?? 0,
+      userUp: 0,
+      media_pedding: '0',
+      media_valid: '0',
+      month: '0',
+      year: '0',
+      accumulated: '0',
     }
-  }, [getMetric])
+  }, [])
 
-  if (loadingMetric) {
+  if (false) {
     return (
       <div>
         <Loading />
@@ -46,7 +41,7 @@ export function Home() {
       <Layout>
         <S.main>
           <S.gridCardBalanc>
-            <BalanceCard valu={metricas?.userUp} title="MEMBROS ATIVOS">
+            <BalanceCard valu={''} title="MEMBROS ATIVOS">
               <UsersThree weight="duotone" />
             </BalanceCard>
 
@@ -55,7 +50,7 @@ export function Home() {
             </BalanceCard>
 
             <BalanceCard
-              valu={getGlobalMetrinc?.consumoTotal ?? ''}
+              valu={''}
               title="ACUMULADO NO ANO"
             >
               <PiggyBank weight="duotone" />

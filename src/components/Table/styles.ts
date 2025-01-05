@@ -24,15 +24,18 @@ export const TableBody = styled.div`
   padding: 5px 0;
   gap: 0.2rem;
   flex-direction: column;
+  width: 100%;
+
 `
 
 export const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap: 1rem;
-
+  grid-template-columns: 1fr 1fr 1fr 0.5fr;
+  column-gap: 30px;
+  
   padding: 5px 10px;
-  border-radius: 8px;
+  align-items: center;
+
 
   :hover {
     background-color: ${cor.bg.dark};
@@ -42,20 +45,20 @@ export const TableRow = styled.div`
 
 export const TableTop = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 0.5fr;
+  column-gap: 10px;
 `
 
 export const TableCell = styled.div`
   flex: 1;
   padding: 5px 0;
+
 `
 
-// Estilos para a busca
 export const SearchInput = styled.input`
   /* Adicione estilos conforme necessário */
 `
 
-// Estilos para a paginação
 export const PaginationContainer = styled.div`
   margin-top: 2rem;
   display: flex;

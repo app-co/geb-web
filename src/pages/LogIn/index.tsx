@@ -6,7 +6,6 @@ import * as Yup from 'yup'
 import { Input } from '../../components/Input'
 import { useToast } from '../../context/ToastContext'
 import { useAuth } from '../../context/authcontext'
-import { getValidationErrors } from '../../utils/getValidationErrors'
 import * as S from './styles'
 
 export function LogIn() {
@@ -17,11 +16,13 @@ export function LogIn() {
 
   const handleSubmit = React.useCallback(
     async (data: any) => {
+      console.log(data)
+
       formRef.current?.setErrors({})
 
       try {
         const schema = Yup.object().shape({
-          membro: Yup.string().required(),
+          apelido: Yup.string().required(),
           senha: Yup.string().required(),
         })
 
@@ -30,23 +31,24 @@ export function LogIn() {
         })
 
         await signIn({
-          membro: data.membro,
+          apelido: data.apelido,
           senha: data.senha,
         })
 
         nv('/home')
       } catch (err: any) {
-        const msn = err.response?.data
-          ? err.response.data.message
-          : 'Ocorreu um erro ao realizar seu cadastro, verifique suas credenciais ou sua conexão com a rede'
-        addToast({
-          type: 'error',
-          title: 'Erro ao realizar o cadastro',
-          description: msn,
-        })
+        console.log('err => ', err)
+        // const msn = err.response?.data
+        //   ? err.response.data.message
+        //   : 'Ocorreu um erro ao realizar seu cadastro, verifique suas credenciais ou sua conexão com a rede'
+        // addToast({
+        //   type: 'error',
+        //   title: 'Erro ao realizar o cadastro',
+        //   description: msn,
+        // })
 
-        const errors = getValidationErrors(err)
-        formRef.current?.setErrors(errors)
+        // const errors = getValidationErrors(err)
+        // formRef.current?.setErrors(errors)
       }
     },
     [addToast, nv, signIn],
@@ -57,7 +59,7 @@ export function LogIn() {
         <S.boxForm>
           <h1>GEB NETWORKING</h1>
           <Form ref={formRef} onSubmit={handleSubmit}>
-            <Input name="membro" mask="text" label="Membro" />
+            <Input name="apelido" mask="text" label="Membro" />
             <Input name="senha" label="Senha" />
 
             <S.buton type="submit">

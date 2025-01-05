@@ -5,6 +5,9 @@ import { IRelation } from '../../dtos'
 import { cor } from '../../styles/color'
 import { Input } from '../Input'
 import * as S from './styles'
+import { IUser } from '../../hooks/dto/interfaces'
+import { format } from 'date-fns'
+import { make } from '../../hooks'
 
 type TGetUser = {
   id: string
@@ -23,50 +26,46 @@ type TGetUser = {
 }
 
 interface I {
-  userSelectd: (user: TGetUser) => void
-  getAllUsers: TGetUser[]
+  userSelectd: (user: IUser) => void
 }
 
-export function Table({ userSelectd, getAllUsers }: I) {
-  const [pageSize, setPageSize] = useState<number>(10) // Defina um valor padrão conforme necessário
-  const [currentPage, setCurrentPage] = useState<number>(1) // Defina um valor padrão conforme necessário
+const { querys } = make()
+
+export function Table({ userSelectd }: I) {
+  const [pageSize, setPageSize] = useState<number>(10)
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const [search, setSearch] = React.useState<string>('')
+  const [pageNumber, setPageNumber] = React.useState(0)
+  const [users, setUsers] = React.useState<IUser[]>([])
 
-  const users = getAllUsers ?? []
+
+  const { data, isLoading } = querys.useUserByHub({
+    nome: search,
+    hub: '0',
+    pageNumber,
+    pageSize
+  })
+
+
   // Função para lidar com a mudança de página
-  const totalItems = users.length
-  const totalPages = Math.ceil(totalItems / pageSize)
+  const totalItems = data?.totalRecords ?? 0
+  const totalPages = Math.ceil(data?.totalRecordsPerPage ?? 0)
 
-  const startIndex = (currentPage - 1) * pageSize
-  const endIndex = startIndex + pageSize
-
-  const currentItems = users.slice(startIndex, endIndex)
-
-  const userList =
-    search !== ''
-      ? users.filter((h) => {
-        const name = h?.nome.toUpperCase()
-        const searchUpcase = search.toLocaleUpperCase()
-
-        if (name.includes(searchUpcase)) {
-          return h
-        }
-        return null
-      })
-      : currentItems
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
 
   const handlePageSizeChange = (size: number) => {
     setPageSize(size)
-    setCurrentPage(1)
   }
 
-  const handleSelectUser = React.useCallback(async (user: TGetUser) => {
+  const handleSelectUser = React.useCallback(async (user: IUser) => {
     userSelectd(user)
   }, [userSelectd])
+
+  React.useEffect(() => {
+    const us = data?.records ?? []
+    if (us.length > 0) {
+      setUsers(us)
+    }
+  }, [data])
 
 
   return (
@@ -89,29 +88,30 @@ export function Table({ userSelectd, getAllUsers }: I) {
             </S.TableCell>
 
             <S.TableCell>
-              <h4>Membro</h4>
+              <h4>Apelido</h4>
             </S.TableCell>
 
             <S.TableCell>
               <h4>Empresa</h4>
             </S.TableCell>
 
-            <S.TableCell>
+            {/* <S.TableCell>
               <h4>Presença</h4>
-            </S.TableCell>
+            </S.TableCell> */}
 
             <S.TableCell>
               <h4>Dt. cadastro</h4>
             </S.TableCell>
           </S.TableTop>
 
-          {userList.map((h) => (
+          {users.map((h) => (
             <S.TableRow onClick={() => handleSelectUser(h)} style={{ color: cor.bg.light }} key={h?.id}>
-              <S.TableCell style={{ textDecorationLine: h.situation.inativo ? 'line-through' : 'none' }} >{h?.nome}</S.TableCell>
-              <S.TableCell>{h?.workname}</S.TableCell>
-              <S.TableCell>{h?.presenca}</S.TableCell>
+              <S.TableCell>{h?.nome}</S.TableCell>
+              <S.TableCell>{h?.apelido}</S.TableCell>
+              <S.TableCell>{h?.profile?.workName}</S.TableCell>
+              {/* <S.TableCell>{h?.presenca}</S.TableCell> */}
               <S.TableCell>
-                {h.created}
+                {format(new Date(h.created_at), 'dd/MM/yyyy')}
               </S.TableCell>
             </S.TableRow>
           ))}
@@ -119,14 +119,14 @@ export function Table({ userSelectd, getAllUsers }: I) {
 
         <S.PaginationContainer>
           <S.PageButton
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
+            onClick={() => setPageNumber(pageNumber - pageSize)}
+            disabled={pageNumber === 0}
           >
             Anterior
           </S.PageButton>
           {/* Renderizar botões de páginação aqui */}
           <S.PageButton
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => setPageNumber(pageNumber + pageSize)}
             disabled={currentPage === totalPages}
           >
             Próxima

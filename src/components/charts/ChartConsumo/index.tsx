@@ -3,7 +3,6 @@ import { format, getMonth } from 'date-fns'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import React, { useRef } from 'react'
-import { useExtratoPeddingUser, useExtratoUser } from '../../../hooks/querys'
 import { cor } from '../../../styles/color'
 import { Loading } from '../../Loading'
 import { months } from '../utils/months'
@@ -18,13 +17,11 @@ interface IResult {
 }
 
 export function ChartConsumo({ id }: I) {
-  const { getEtrato, isLoading } = useExtratoUser(id)
-  const { getEtratoPedding, isLoadingPedding } = useExtratoPeddingUser(id)
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
 
   const chart = React.useMemo(() => {
-    const relations_valid = getEtrato?.allRelation ?? []
-    const relations_pedding = getEtratoPedding?.allRelation ?? []
+    const relations_valid = []
+    const relations_pedding = []
 
     const currentDate = format(new Date(), 'MM/yy')
 
@@ -88,7 +85,7 @@ export function ChartConsumo({ id }: I) {
     })
 
     return { result_pedding, result_valid }
-  }, [getEtrato, getEtratoPedding])
+  }, [])
 
   const options: Highcharts.Options = {
     chart: {
@@ -155,7 +152,7 @@ export function ChartConsumo({ id }: I) {
     ],
   }
 
-  if (isLoading) {
+  if (false) {
     return (
       <div
         style={{

@@ -30,6 +30,7 @@
     "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.8.1",
+    "react-select": "^5.9.0",
     "react-spring": "^9.7.1",
     "sort-by": "^1.2.0",
     "styled-components": "^5.3.6",

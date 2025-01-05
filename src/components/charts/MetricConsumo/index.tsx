@@ -3,7 +3,6 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import React, { useRef } from 'react'
 import { useQuery } from 'react-query'
-import { useRelation } from '../../../hooks/querys'
 import { api } from '../../../services'
 import { consumoRoutes } from '../../../services/routes'
 import { cor } from '../../../styles/color'
@@ -20,7 +19,7 @@ interface IResult {
 }
 
 export function ChartMetricConsumo() {
-  const { getAllRelation, loadingMetric } = useRelation()
+
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
   const { data, isLoading } = useQuery('all-consumo', async () => {
     const rs = await api.get(consumoRoutes.get['all-consumo'])
@@ -28,7 +27,7 @@ export function ChartMetricConsumo() {
   })
 
   const chart = React.useMemo(() => {
-    const relation = getAllRelation || []
+    const relation = []
 
     const fil = relation.filter((h) => {
       if (h.type === 'CONSUMO_OUT' && h.situation) {
@@ -60,7 +59,7 @@ export function ChartMetricConsumo() {
     })
 
     return result
-  }, [getAllRelation])
+  }, [])
 
   const options: Highcharts.Options = {
     chart: {
@@ -116,7 +115,7 @@ export function ChartMetricConsumo() {
     ],
   }
 
-  if (loadingMetric) {
+  if (false) {
     return (
       <div
         style={{

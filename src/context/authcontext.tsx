@@ -1,19 +1,21 @@
 import React, { createContext, useCallback, useContext } from 'react'
 import { IUserDtos } from '../dtos'
 import { api } from '../services'
+import { make } from '../hooks'
+import { IUser } from '../hooks/dto/interfaces'
 
 interface IUserCredentials {
-  membro: string
+  apelido: string
   senha: string
 }
 
 interface AuthState {
   token: string
-  user: IUserDtos
+  user: IUser
 }
 
 interface AuthContextData {
-  user: IUserDtos
+  user: IUser
   signIn(credentials: IUserCredentials): Promise<void>
   logOut: () => void
 }
@@ -22,10 +24,12 @@ const keyUser = '@geb:user'
 const keyToken = '@geb:tokn'
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
+const { mutations, get } = make()
 
 export function AuthProvider({ children }: any) {
   const [data, setData] = React.useState<AuthState>({} as AuthState)
   const [loading, setLoading] = React.useState<boolean>(false)
+  const { mutateAsync, isLoading } = mutations.session()
 
   // const [data, setData] = useState<AuthState>(() => {
   //   const token = localStorage.getItem(keyToken)
@@ -43,10 +47,8 @@ export function AuthProvider({ children }: any) {
   const updateDataUser = React.useCallback(async (token: string) => {
     api.defaults.headers.common.Authorization = `Bearer ${token}`
 
-    await api.get('/user/find-user-by-id').then(async (h) => {
-      const user = h.data
-      setData({ token, user })
-    })
+    const user = await get.userById()
+    setData({ token, user })
   }, [])
 
   const LoadingUser = useCallback(async () => {
@@ -65,23 +67,16 @@ export function AuthProvider({ children }: any) {
     LoadingUser()
   }, [])
 
-  const signIn = useCallback(async ({ membro, senha }: IUserCredentials) => {
-    await api
-      .post('/user/session', {
-        membro,
-        senha,
-      })
-      .then(async (h) => {
-        const { token, user } = h.data
-        api.defaults.headers.common.Authorization = `Bearer ${token}`
+  const signIn = useCallback(async ({ apelido, senha }: IUserCredentials) => {
+    const log = await mutateAsync({ apelido, senha })
 
-        await api.get('/user/find-user-by-id').then(async (h) => {
-          const user = h.data
-          setData({ token, user })
-          localStorage.setItem(keyToken, token)
-          setData({ token, user })
-        })
-      })
+    const { token } = log
+    api.defaults.headers.common.Authorization = `Bearer ${token}`
+
+    const user = await get.userById()
+    setData({ token, user })
+    localStorage.setItem(keyToken, token)
+    setData({ token, user })
   }, [])
 
   const logOut = useCallback(async () => {
