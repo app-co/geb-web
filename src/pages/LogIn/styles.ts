@@ -15,7 +15,7 @@ export const content = styled.div`
 `
 
 export const boxLogo = styled.div`
-  /* background-color: ${cor.blue[3]}; */
+  background-color: ${cor.dark[2]};
 `
 
 export const boxForm = styled.div`

@@ -7,6 +7,7 @@ import { Input } from '../../components/Input'
 import { useToast } from '../../context/ToastContext'
 import { useAuth } from '../../context/authcontext'
 import * as S from './styles'
+import logo from '../../../public/images/logo.png'
 
 export function LogIn() {
   const { signIn } = useAuth()
@@ -69,7 +70,7 @@ export function LogIn() {
         </S.boxForm>
 
         <S.boxLogo>
-          <h1>logo</h1>
+          <img src={logo} />
         </S.boxLogo>
       </S.content>
 
