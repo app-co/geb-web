@@ -17,6 +17,7 @@ import * as S from './styles'
 import { make } from '../../hooks'
 import { IUser } from '../../hooks/dto/interfaces'
 import { TUser } from '../../hooks/dto/types'
+import { InputSelect, MultiSelect } from '../../components/MultiSelect'
 
 type TOption = 'metric' | 'config'
 
@@ -38,6 +39,17 @@ interface IUserSlected {
 
 const { mutations } = make()
 
+const hubs = [
+  {
+    label: 'GEB Networking',
+    value: 0,
+  },
+  {
+    label: 'Club da Mentoria',
+    value: 1,
+  }
+]
+
 export function Membros() {
   const { addToast } = useToast()
 
@@ -48,7 +60,7 @@ export function Membros() {
   const [option, setOption] = React.useState<TOption>('metric')
   const [modalDelete, setModalDelete] = React.useState<boolean>(false)
   const [loadPres, setLoadPres] = React.useState<boolean>(false)
-  const [hub, setHub] = React.useState('GEB')
+  const [hub, setHub] = React.useState<{ label: string, value: string }[]>([])
 
   const { mutateAsync: upUser, isLoading: loadUpUser } = mutations.updateUser()
 
@@ -64,13 +76,15 @@ export function Membros() {
     async (data: TUser) => {
       const { nome, apelido, senha } = data
 
+      console.log(hub)
+
       try {
         const dados: TUser = {
           nome,
           apelido,
           senha: senha ?? null,
           id: userSelected!.id,
-          hub: [0],
+          hub: hub.map(h => Number(h.value)),
           adm: userSelected!.adm,
           apadrinhado: userSelected!.apadrinhado
         }
@@ -91,7 +105,7 @@ export function Membros() {
         console.log('erro', err)
       }
     },
-    [addToast, userSelected?.id],
+    [hub, userSelected?.id],
   )
 
   const handleDeleteUser = React.useCallback(async () => {
@@ -213,24 +227,17 @@ export function Membros() {
                       <div style={{ marginBlock: 20, gap: 8, display: 'flex', flexDirection: 'column' }} >
                         <h3>Adicione o membro ao HUB</h3>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} >
-                          <input value={'GEB'} checked={hub === 'GEB'} onChange={h => setHub(h.currentTarget.value)} style={{
-                            width: 30, height: 30,
-                          }} type="checkbox" />
-                          <h3>G.E.B</h3>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} >
-                          <input value={'CLUB_MENTORIA'} checked={hub === 'CLUB_MENTORIA'} onChange={h => setHub(h.currentTarget.value)} style={{
-                            width: 30, height: 30,
-                          }} type="checkbox" />
-                          <h3>Club da mentaria</h3>
-                        </div>
+                        <InputSelect
+                          options={hubs}
+                          onChange={h => setHub(h)}
+                        // value={[]}
+                        />
                       </div>
 
                       <Button type="submit" title="SALVAR" />
                     </Form>
 
-                    <div
+                    {/* <div
                       style={{
                         alignItems: 'center',
                         marginTop: '2rem',
@@ -249,8 +256,8 @@ export function Membros() {
                       bg="delet"
                       title={'BANIR'}
                       load={loadPres}
-                    />
-
+                    /> */}
+                    {/* 
                     <div
                       style={{
                         alignItems: 'center',
@@ -262,13 +269,13 @@ export function Membros() {
                     >
                       <BsTrash />
                       <h3>Deletar usuário?</h3>
-                    </div>
+                    </div> */}
 
-                    <Button
+                    {/* <Button
                       onClick={() => setModalDelete(true)}
                       bg="delet"
                       title="DELETAR"
-                    />
+                    /> */}
                   </S.form>
 
                   <div className="add">
