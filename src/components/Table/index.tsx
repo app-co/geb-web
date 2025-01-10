@@ -41,7 +41,7 @@ export function Table({ userSelectd }: I) {
 
   const { data, isLoading } = querys.useUserByHub({
     nome: search,
-    hub: '0',
+    hub: '0,1',
     pageNumber,
     pageSize
   })
