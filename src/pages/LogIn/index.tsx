@@ -59,7 +59,7 @@ export function LogIn() {
       <S.content>
         <S.boxForm>
           <h1>GEB NETWORKING</h1>
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form placeholder={'undefined'} onPointerEnterCapture={'undefined'} onPointerLeaveCapture={'undefined'} ref={formRef} onSubmit={handleSubmit}>
             <Input name="apelido" mask="text" label="Membro" />
             <Input name="senha" label="Senha" />
 

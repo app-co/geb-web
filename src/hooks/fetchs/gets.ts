@@ -1,6 +1,6 @@
 import { api } from "../../services"
 import { IRelationship, IRelationsMetricas, IUser, IUsersByHub } from "../dto/interfaces"
-import { TRelationships, TUsersByHub } from "../dto/types"
+import { TUsersByHub } from "../dto/types"
 
 export class GetFetchs {
 

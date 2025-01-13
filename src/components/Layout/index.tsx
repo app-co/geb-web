@@ -4,7 +4,7 @@ import { Menu } from '../Menu'
 import * as S from './styles'
 
 type T = {
-  children: React.ReactNode
+  children: any
 }
 
 const menu = [

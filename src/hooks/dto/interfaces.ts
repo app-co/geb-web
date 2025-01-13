@@ -1,4 +1,4 @@
-import { TRelationships, TUser } from "./types";
+import { TUser } from "./types";
 
 export interface IUser extends TUser {
   profile: IProfile

@@ -1,7 +1,5 @@
 import { Form } from '@unform/web'
 import React from 'react'
-import { BsTrash } from 'react-icons/bs'
-import { FaUserAltSlash } from 'react-icons/fa'
 import { BalanceCard } from '../../components/BalanceCard'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
@@ -17,7 +15,7 @@ import * as S from './styles'
 import { make } from '../../hooks'
 import { IUser } from '../../hooks/dto/interfaces'
 import { TUser } from '../../hooks/dto/types'
-import { InputSelect, MultiSelect } from '../../components/MultiSelect'
+import { InputSelect } from '../../components/MultiSelect'
 
 type TOption = 'metric' | 'config'
 
@@ -109,17 +107,17 @@ export function Membros() {
   )
 
   const handleDeleteUser = React.useCallback(async () => {
-    await api
-      .delete(`/user/delete/${userSelected?.membro}`)
-      .then(() => {
-        alert('Membro deletado')
-        setGoback(!goback)
-        setModalDelete(false)
-      })
-      .catch((h) => {
-        console.log(h.response.data)
-      })
-  }, [goback, userSelected?.membro])
+    // await api
+    //   .delete(`/user/delete/${userSelected?.membro}`)
+    //   .then(() => {
+    //     alert('Membro deletado')
+    //     setGoback(!goback)
+    //     setModalDelete(false)
+    //   })
+    //   .catch((h) => {
+    //     console.log(h.response.data)
+    //   })
+  }, [goback, userSelected?.apelido])
 
   const handleAddPress = React.useCallback(async () => {
     setLoadPres(true)
@@ -128,29 +126,12 @@ export function Membros() {
     })
 
     const getUser = await fetchGlobalMetric()
-    const user = getUser.getUsers.find((h) => h.id === userSelected!.id)
+    const user = getUser.getUsers.find((h) => h.id === userSelected!.id) as any
 
     setUserSl(user)
     setLoadPres(false)
   }, [userSelected])
 
-  const handleInativateMembro = React.useCallback(async () => {
-    const { inativo } = userSelected!.situation
-    setLoadPres(true)
-    await api.put('/situation/update-situation', {
-      fk_id_user: userSelected?.id,
-      inativo: !inativo,
-    })
-
-
-    addToast({
-      title: 'SUCESSO',
-      type: 'success',
-      description: 'As alterações foi realizado com sucesso!',
-    })
-    setGoback(!goback)
-    setLoadPres(false)
-  }, [addToast, goback, userSelected])
 
   return (
     <div>
@@ -210,6 +191,7 @@ export function Membros() {
                   <S.form>
                     <h3 style={{ marginBottom: '2rem' }}>Alterar Cadastro</h3>
                     <Form
+                      placeholder={'undefined'} onPointerEnterCapture={'undefined'} onPointerLeaveCapture={'undefined'}
                       onSubmit={handleUpateMembro}
                       initialData={{
                         nome: userSelected.nome,
@@ -229,6 +211,7 @@ export function Membros() {
 
                         <InputSelect
                           options={hubs}
+                          value={hub}
                           onChange={h => setHub(h)}
                         // value={[]}
                         />
@@ -281,7 +264,7 @@ export function Membros() {
                   <div className="add">
                     <h3>Adicione presença </h3>
                     <h4 style={{ color: '#fff', fontWeight: 300 }}>
-                      {userSelected?.presenca}
+                      {0}
                     </h4>
 
                     <div onClick={handleAddPress} className="button-add">

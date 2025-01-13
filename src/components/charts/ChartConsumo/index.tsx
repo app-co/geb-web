@@ -20,8 +20,8 @@ export function ChartConsumo({ id }: I) {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)
 
   const chart = React.useMemo(() => {
-    const relations_valid = []
-    const relations_pedding = []
+    const relations_valid: any[] = []
+    const relations_pedding: any[] = []
 
     const currentDate = format(new Date(), 'MM/yy')
 

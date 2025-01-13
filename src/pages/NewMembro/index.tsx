@@ -47,7 +47,7 @@ export function NewMembro() {
   return (
     <Layout>
       <S.Container>
-        <Form ref={ref} onSubmit={submit}>
+        <Form onSubmit={submit} ref={ref} placeholder={'undefined'} onPointerEnterCapture={'undefined'} onPointerLeaveCapture={'undefined'} >
           <div className="content">
             <Input name="nome" label="NOME" />
             <Input name="membro" label="MEMBRO" />

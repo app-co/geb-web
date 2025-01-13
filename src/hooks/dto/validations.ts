@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { _number } from "../../utils/mask";
 
 export const validation = {
   user: z.object({
@@ -34,21 +33,7 @@ export const validation = {
     updated_at: z.string({ message: '* campo obrigatório' }),
     user_id: z.string({ message: '* campo obrigatório' }),
   }),
-  relationships: z.object({
-    id: z.number(),
-    status: z.number().default(0),
-    userId: z.string({ message: '* campo obrigatório' }),
-    avatar: z.string().nullable(),
-    userReceptorId: z.string({ message: '* campo obrigatório' }).optional(),
-    hub: z.number().default(0),
-    type: z.number(),
-    valor: z.string().transform(h => {
-      const vl = _number(h)
-      const valor = vl && vl.length >= 3 ? Number(vl) / 100 : Number(vl)
-      return valor
-    }).optional(),
-    objeto: z.any({}).optional()
-  }),
+
   indication: z.object({
     indicado_por: z.string({ message: '* campo obrigatório' }),
     nomeCliente: z.string({ message: '* campo obrigatório' }),
@@ -83,6 +68,3 @@ export const validation = {
   })
 }
 
-export const validationB2b = validation.b2b.merge(validation.relationships)
-export const validationConsumo = validation.consumo.merge(validation.relationships)
-export const validationIndication = validation.indication.merge(validation.relationships)

@@ -1,12 +1,12 @@
 import * as S from './styles'
 
 type T = {
-  children: React.ReactNode
+  children: any
   valu?: string
   title?: string
 }
 
-export function BalanceCard({ children, valu, title }: T) {
+export function BalanceCard({ valu, title, children }: T) {
   return (
     <S.Container>
       {children}

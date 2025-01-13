@@ -27,7 +27,7 @@ export function ChartMetricConsumo() {
   })
 
   const chart = React.useMemo(() => {
-    const relation = []
+    const relation: any[] = []
 
     const fil = relation.filter((h) => {
       if (h.type === 'CONSUMO_OUT' && h.situation) {

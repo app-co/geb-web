@@ -72,7 +72,7 @@ export function Table({ userSelectd }: I) {
     <S.Container>
       <S.TableContainer>
         <S.TableHeader>
-          <Form onSubmit={() => { }} >
+          <Form placeholder={'undefined'} onPointerEnterCapture={'undefined'} onPointerLeaveCapture={'undefined'} onSubmit={() => { }} >
 
             <Input
               onChange={(h) => setSearch(h.currentTarget.value)}
