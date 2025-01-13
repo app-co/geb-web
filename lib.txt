@@ -1,0 +1,1 @@
+@phosphor-icons/react @react-spring/web @unform/core @unform/web axios date-fns dotenv highcharts highcharts-react-official keen-slider localforage match-sorter plop react react-dom react-icons react-loader-spinner react-modal react-query react-router-dom react-select react-spring sort-by styled-components typescript yup zod

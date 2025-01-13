@@ -4,7 +4,6 @@ import { BalanceCard } from '../../components/BalanceCard'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { Layout } from '../../components/Layout'
-import { Modal } from '../../components/Modal'
 import { Table } from '../../components/Table'
 import { ChartConsumo } from '../../components/charts/ChartConsumo'
 import { useToast } from '../../context/ToastContext'
@@ -135,13 +134,6 @@ export function Membros() {
 
   return (
     <div>
-      <Modal
-        submit={handleDeleteUser}
-        cancel={() => setModalDelete(false)}
-        isOpen={modalDelete}
-        title="Você tem certeza que deseja deletar este usuário?"
-      />
-
       <Layout>
         <div>
           {userSelected && goback ? (
