@@ -46,6 +46,11 @@ export class Mutations {
     return useMutation(this.del.deleteOnStorage)
   }
 
+
+  public deleteUser() {
+    return useMutation(this.del.delteUser)
+  }
+
   public getUserById() {
     return useMutation(this.get.userById, {
       onError: (error) => showMessage(error)

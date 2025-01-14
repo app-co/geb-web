@@ -3,7 +3,7 @@ import { api } from "../../services"
 export class DelteFetchs {
 
   public async delteUser(id: string) {
-    const { data } = await api.post(`/user/${id}`)
+    const { data } = await api.delete(`/user/${id}`)
 
     return data
   }

@@ -15,7 +15,12 @@ import { make } from '../../hooks'
 import { IUser } from '../../hooks/dto/interfaces'
 import { TUser } from '../../hooks/dto/types'
 import { InputSelect } from '../../components/MultiSelect'
-
+import { isTemplateExpression } from 'typescript'
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Butto from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { BsTrash } from 'react-icons/bs'
 type TOption = 'metric' | 'config'
 
 interface IUserSlected {
@@ -39,11 +44,11 @@ const { mutations } = make()
 const hubs = [
   {
     label: 'GEB Networking',
-    value: 0,
+    value: '0',
   },
   {
     label: 'Club da Mentoria',
-    value: 1,
+    value: '1',
   }
 ]
 
@@ -60,6 +65,7 @@ export function Membros() {
   const [hub, setHub] = React.useState<{ label: string, value: string }[]>([])
 
   const { mutateAsync: upUser, isLoading: loadUpUser } = mutations.updateUser()
+  const { mutateAsync: deleteUser, isLoading: loadDeleteUser } = mutations.deleteUser()
 
   const metrics = React.useMemo(() => {
 
@@ -72,8 +78,6 @@ export function Membros() {
   const handleUpateMembro = React.useCallback(
     async (data: TUser) => {
       const { nome, apelido, senha } = data
-
-      console.log(hub)
 
       try {
         const dados: TUser = {
@@ -106,16 +110,13 @@ export function Membros() {
   )
 
   const handleDeleteUser = React.useCallback(async () => {
-    // await api
-    //   .delete(`/user/delete/${userSelected?.membro}`)
-    //   .then(() => {
-    //     alert('Membro deletado')
-    //     setGoback(!goback)
-    //     setModalDelete(false)
-    //   })
-    //   .catch((h) => {
-    //     console.log(h.response.data)
-    //   })
+    try {
+      await deleteUser(userSelected!.id)
+      setModalDelete(false)
+      setGoback(!goback)
+    } catch (error) {
+      alert('Erro ao deletar usuário')
+    }
   }, [goback, userSelected?.apelido])
 
   const handleAddPress = React.useCallback(async () => {
@@ -131,9 +132,49 @@ export function Membros() {
     setLoadPres(false)
   }, [userSelected])
 
+  React.useEffect(() => {
+    const hb = userSelected?.hub.map(h => {
+      const label = hubs.find(p => p.value === String(h))
+      return {
+        label: label?.label ?? 'GEB Networking',
+        value: String(h) ?? '0',
+      }
+    }) ?? []
+    setHub(hb)
+  }, [])
+
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
 
   return (
     <div>
+      <Modal
+        open={modalDelete}
+        onClose={() => setModalDelete(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Deseja deletar este membro?
+          </Typography>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }} >
+            <Button bg='delet' title="NÃO" onClick={() => setModalDelete(false)} />
+            <Button title="SIM" onClick={handleDeleteUser} />
+          </div>
+        </Box>
+      </Modal>
       <Layout>
         <div>
           {userSelected && goback ? (
@@ -205,7 +246,6 @@ export function Membros() {
                           options={hubs}
                           value={hub}
                           onChange={h => setHub(h)}
-                        // value={[]}
                         />
                       </div>
 
@@ -232,7 +272,7 @@ export function Membros() {
                       title={'BANIR'}
                       load={loadPres}
                     /> */}
-                    {/* 
+
                     <div
                       style={{
                         alignItems: 'center',
@@ -244,13 +284,13 @@ export function Membros() {
                     >
                       <BsTrash />
                       <h3>Deletar usuário?</h3>
-                    </div> */}
+                    </div>
 
-                    {/* <Button
+                    <Button
                       onClick={() => setModalDelete(true)}
                       bg="delet"
                       title="DELETAR"
-                    /> */}
+                    />
                   </S.form>
 
                   <div className="add">
